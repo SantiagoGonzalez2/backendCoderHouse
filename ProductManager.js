@@ -74,7 +74,8 @@ class ProductManager {
     }
 
     getProducts() {
-        console.log(this.readFile())
+        // console.log(this.readFile())
+        return this.readFile()
     }
 
     getProductsById(id) {
@@ -124,14 +125,20 @@ class ProductManager {
 
 }
 
-const twoPhone = new ProductManager("Iphone", "14 PLUS", "plateado", "img", 1, 4)
+const twoPhone = new ProductManager("Iphonee", "14 PLUS", "plateado", "img", 1, 4)
+const onePhone = new ProductManager("Samsung", "22 ULTRA", 1000, "hola", "img", 3)
 
-// twoPhone.addProducts()
+//  twoPhone.addProducts()
+//  onePhone.addProducts()
 
 const newProductManager = new ProductManager()
 
 // newProductManager.getProducts()
 // newProductManager.getProductsById(1)
-// newProductManager.addToData()
+//  newProductManager.addToData()
+ 
 // newProductManager.updateProduct(1, {title:199})
 // newProductManager.deleteProduct(1)
+
+
+module.exports = ProductManager
