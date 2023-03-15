@@ -1,5 +1,4 @@
-const fs = require('fs');
-
+import fs from 'fs'
 
 const products = []
 
@@ -59,13 +58,13 @@ class ProductManager {
 
             // console.log(products)
         }
-        if (!product.title || !product.description || !product.price ||
+        // if (!product.title || !product.description || !product.price ||
 
-            !product.thumbnail || !product.code || !product.stock) {
+        //     !product.thumbnail || !product.code || !product.stock) {
 
-            throw new Error("All fields are required");
+        //     throw new Error("All fields are required");
 
-        }
+        // }
     }
 
 
@@ -141,4 +140,4 @@ const newProductManager = new ProductManager()
 // newProductManager.deleteProduct(1)
 
 
-module.exports = ProductManager
+export default ProductManager
