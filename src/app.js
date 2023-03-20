@@ -1,7 +1,6 @@
 import  express  from 'express';
-// const ProductManager = require('../ProductManager.js')
-// const productManager = new ProductManager('data.json')
 import productsRouters from './routes/products.use.js'
+import cartRouters from './routes/cart.use.js'
 const app = express();
 const PORT = 8080
 
@@ -11,6 +10,8 @@ app.use(express.json())
 
 
 app.use("/api/products", productsRouters)
+
+app.use("/api/cart", cartRouters)
 
 
 

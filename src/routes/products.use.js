@@ -9,14 +9,12 @@ const readFile = ()  =>{
 
     return parseContent
 }
-const getProducts =() =>{
-    return readFile()
-}
+
 
 const addToData =() => {
     fs.writeFileSync('data.json', JSON.stringify(products))
 }
-let products = getProducts()
+let products = readFile()
 
 
 router.get("/", async  (req, res)=>{
