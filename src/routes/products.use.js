@@ -48,16 +48,16 @@ router.post('/', async (request, response) => {
     product.id = products.length;
     if (!product.title || !product.description || !product.price ||
 
-        !product.thumbnail || !product.code || !product.stock || !product.status)  {
-        console.error("Faltan completar campos");
+        !product.thumbnail || !product.code || !product.stock || !product.status || products.find((obj) => obj.title === product.title))  {
         
-        response.status(400).send({ status: "Error", message: "Producto no valido. Falta completar campos para una carga correcta" });
+        
+        response.status(400).send({ status: "Error", message: "Producto no valido. Falta completar campos para una carga correcta o es un producto con titulo  repetido" });
     } else {
         products.push(product);
         addToData()
     
        
-        console.log(product);
+       
         response.send({ status: "Success", message: `Producto agregado con exito, con ID: ${product.id}` });
     }
 });
