@@ -39,7 +39,7 @@ else return res.status(404).json({message: "cart dont exist"})
 
 router.post("/", (req,res) =>{
     let productsToAgree = {
-        id :Math.floor( Math.random() *100 +2),
+        id :carts.length,
         products : [ ]
     }
     
@@ -70,15 +70,12 @@ let productsToAgree= {
     quantity: 1
 }
 
-// !cart.products.product === productsToAgree.id ?cart.products.push(productsToAgree) :  cart.products.quantity ++
 
+if(cart.products.find((obj)=> obj.product === productsToAgree.product)) cart.products.find((obj) => obj.quantity++)
 
-
-cart.products.push(productsToAgree)
-
-
-carts.push(cart)
-
+else{
+    cart.products.push(productsToAgree)  
+}
 fs.writeFileSync('cart.json', JSON.stringify(carts))
 
 res.send(cart)

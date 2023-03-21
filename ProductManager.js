@@ -136,7 +136,7 @@ const newProductManager = new ProductManager()
 // newProductManager.getProductsById(1)
 //  newProductManager.addToData()
  
-// newProductManager.updateProduct(1, {title:199})
+newProductManager.updateProduct(7, {title:"todo bien"})
 // newProductManager.deleteProduct(1)
 
 

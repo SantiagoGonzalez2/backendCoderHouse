@@ -45,13 +45,13 @@ router.get("/:pid", async  (req,res)=>{
 router.post('/', async (request, response) => {
     
     let product = request.body;
-    product.id = Math.floor(Math.random() * 20 + 1);
+    product.id = products.length;
     if (!product.title || !product.description || !product.price ||
 
-        !product.thumbnail || !product.code || !product.stock)  {
-        console.error("Faltan campos");
-        console.error(product);
-        response.status(400).send({ status: "Error", message: "Producto no valido. Falta completar campos" });
+        !product.thumbnail || !product.code || !product.stock || !product.status)  {
+        console.error("Faltan completar campos");
+        
+        response.status(400).send({ status: "Error", message: "Producto no valido. Falta completar campos para una carga correcta" });
     } else {
         products.push(product);
         addToData()
@@ -66,27 +66,25 @@ router.put("/:pid", async  (req,res)=>{
     
     const idProduct =  parseInt(req.params.pid)
     const productUpdate = req.body
-    const productPosition =   products.map(obj => obj.id === idProduct)
-    
-    products[productPosition] = productUpdate
-    fs.writeFileSync('data.json', JSON.stringify([productUpdate], null))
+    const updDate = products.map((product) => product.id === idProduct ?{...product, ...productUpdate} : product)
 
-    res.send({message: "update"})    
+
+   
+    
+   
+    fs.writeFileSync('data.json', JSON.stringify(updDate, null))
+
+    res.send({message: " product update"})    
 })  
 
 router.delete('/:pid', (request, response) => {
     
-    let pid = parseInt(request.params.pid);
+    let pid = request.params.pid
+    const userPosition = products.filter((product) => product.id !== parseInt(pid))
+
+    fs.writeFileSync('data.json', JSON.stringify(userPosition, null))
     
- 
-    const userPosition = products.find((u => u.id === pid));
-   
-    
-    
-    products.splice(userPosition, 1);
-    fs.writeFileSync('data.json', JSON.stringify(products, null))
-    
-    return response.send({ status: "Success", message: "Usuario Eliminado." }); //Si no se indica retorna status HTTP 200OK.
+    return response.send({ status: "Success", message: "Producto eliminado" });
 });
 
 
