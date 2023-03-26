@@ -1,4 +1,5 @@
 import { Router } from 'express'
+
 const router = Router()
 import fs from 'fs'
 
@@ -26,6 +27,7 @@ router.get("/", async  (req, res)=>{
 
    
 })
+
 
 
 router.get("/:pid", async  (req,res)=>{
@@ -86,6 +88,9 @@ router.delete('/:pid', (request, response) => {
     
     return response.send({ status: "Success", message: "Producto eliminado" });
 });
+
+
+
 
 
 
