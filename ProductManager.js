@@ -68,8 +68,8 @@ class ProductManager {
     }
 
 
-    addToData() {
-        fs.writeFileSync(this.path, JSON.stringify(products))
+    addToData(params) {
+        fs.writeFileSync(this.path, JSON.stringify(params))
     }
 
     getProducts() {
@@ -104,13 +104,19 @@ class ProductManager {
 
     deleteProduct(id) {
         const dataFile = this.readFile() 
-        const productsFilter = dataFile.filter((product) => product.id !== id)
+
+        let products  =dataFile
+      
+
+        const userPosition = products.filter((product) => product.id !== id)
+
+        
 
 
         if (!dataFile.find((obj) => obj.id === id)) throw new Error("product whit that id not found")
 
         else {
-            fs.writeFileSync(this.path, JSON.stringify(productsFilter, null))
+            fs.writeFileSync('data.json', JSON.stringify(userPosition, null))
 
 
         }
@@ -124,20 +130,20 @@ class ProductManager {
 
 }
 
-const twoPhone = new ProductManager("Iphonee", "14 PLUS", "plateado", "img", 1, 4)
-const onePhone = new ProductManager("Samsung", "22 ULTRA", 1000, "hola", "img", 3)
+// const twoPhone = new ProductManager("Iphonee", "14 PLUS", "plateado", "img", 1, 4)
+// const onePhone = new ProductManager("Samsung", "22 ULTRA", 1000, "hola", "img", 3)
 
 //  twoPhone.addProducts()
 //  onePhone.addProducts()
 
-const newProductManager = new ProductManager()
+// const newProductManager = new ProductManager()
 
 // newProductManager.getProducts()
 // newProductManager.getProductsById(1)
 //  newProductManager.addToData()
  
-newProductManager.updateProduct(7, {title:"todo bien"})
-// newProductManager.deleteProduct(1)
+// newProductManager.updateProduct(7, {title:"todo bien"})
+// newProductManager.deleteProduct(0)
 
 
 export default ProductManager

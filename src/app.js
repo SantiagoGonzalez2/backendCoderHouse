@@ -1,13 +1,16 @@
 import  express  from 'express';
 import productsRouters from './routes/products.use.js'
 import cartRouters from './routes/cart.use.js'
-import viewRouters from './view/productsView.use.js'
+import viewRouters from './routes/form.use.js'
+import deleteRouters from './routes/delete.use.js'
 import handlebars from 'express-handlebars'
 import __dirname from './utils.js'
 import {Server} from 'socket.io';
+import productManager from '../ProductManager.js'
+import productList from './routes/productView.use.js'
 
 
-
+const class1 = new productManager()
 
 
 const app = express();
@@ -29,7 +32,7 @@ app.set('views', __dirname + "/view");
 app.set('view engine', 'handlebars');
 
 //public
-app.use(express.static(__dirname +'/public'));
+app.use(express.static(__dirname +"/public"));
 
 
 
@@ -40,7 +43,11 @@ app.use("/api/products", productsRouters)
 
 app.use("/api/cart", cartRouters)
 
-app.use("/views/products", viewRouters)
+app.use("/views/", viewRouters)
+
+app.use ("/views", deleteRouters)
+
+app.use ("/views", productList)
 
 
 //apreton de manos 
@@ -48,13 +55,36 @@ app.use("/views/products", viewRouters)
 socketServer.on('connection', socket=>{
     console.log('Nuevo cliente conectado!')
 
-    socket.on('mensaje', data =>{
-        console.log("llega");
-        console.log(data)
-    })
+socket.on('data', data =>{
+    
+    let products = class1.getProducts()
+    data.id = products.length;
+    products.push(data)
+    class1.addToData(products)
+    console.log(products)
+})
+
+
+socket.on("IDdelete", data=>{
+
+    
+    class1.deleteProduct(parseInt(data))
+
+    console.log(" Producto borrado reysss ");
 
 
 
+
+
+        
+
+    
+
+
+    
+})
+
+socket.emit("products", class1.getProducts())
 })
    
 
