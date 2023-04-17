@@ -8,6 +8,7 @@ import __dirname from './utils.js'
 import {Server} from 'socket.io';
 import productManager from '../ProductManager.js'
 import productList from './routes/productView.use.js'
+import mongoose from 'mongoose';
 
 
 const class1 = new productManager()
@@ -89,8 +90,22 @@ socket.emit("products", class1.getProducts())
    
 
 
+// coneccion con mongodb
+
+const DB = 'mongodb+srv://admin:admin@dbcoder.kj70vvc.mongodb.net/MiDBCD'
 
 
+
+const conecctMongoDB = async ()=>{
+    try {
+        await mongoose.connect(DB)
+        console.log('conectado con exito a mongoDB');
+    }catch(error) {
+        console.error('fallo la connecion a mongoDB' + error);
+        process.exit()
+    }
+}
+conecctMongoDB()
 
 
 
