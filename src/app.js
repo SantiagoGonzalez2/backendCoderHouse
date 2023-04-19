@@ -9,17 +9,37 @@ import {Server} from 'socket.io';
 import productManager from '../ProductManager.js'
 import productList from './routes/productView.use.js'
 import mongoose from 'mongoose';
-
+import { productsModel } from './models/products.model.js';
 
 const class1 = new productManager()
 
-
+//express
 const app = express();
 const PORT = 8080
 const httpServer = app.listen(PORT, ()=> {
     console.log(`server run on port ${PORT}`)
 })
+
+//socket
 const socketServer = new Server(httpServer);
+
+
+//mongo
+const DB = 'mongodb+srv://admin:admin@dbcoder.kj70vvc.mongodb.net/MiDBCD'
+const conecctMongoDB = async ()=>{
+    try {
+        await mongoose.connect(DB)
+        console.log('conectado con exito a mongoDB');
+    }catch(error) {
+        console.error('fallo la connecion a mongoDB' + error);
+        process.exit()
+    }
+}
+conecctMongoDB()
+
+
+
+
 
 // preparar la configuracion del servidor para recibir archivos json
 app.use(express.urlencoded({extended:true}))
@@ -85,27 +105,30 @@ socket.on("IDdelete", data=>{
     
 })
 
-socket.emit("products", class1.getProducts())
+socket.emit("products", async ()=>{  
+    
+    try {
+    
+    let  productsMongoDB = await productsModel.find().lean()
+    console.log(productsMongoDB);
+    return productsMongoDB
+}
+
+    catch(err) {
+        console.log("error al cargar la vista de productos " + err);
+    }
+    
+})
 })
    
 
 
-// coneccion con mongodb
-
-const DB = 'mongodb+srv://admin:admin@dbcoder.kj70vvc.mongodb.net/MiDBCD'
+// conexion con mongodb
 
 
 
-const conecctMongoDB = async ()=>{
-    try {
-        await mongoose.connect(DB)
-        console.log('conectado con exito a mongoDB');
-    }catch(error) {
-        console.error('fallo la connecion a mongoDB' + error);
-        process.exit()
-    }
-}
-conecctMongoDB()
+
+
 
 
 

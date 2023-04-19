@@ -1,6 +1,9 @@
 import fs from 'fs'
+import { productsModel } from './src/models/products.model.js'
 
-const products = []
+
+
+
 
 class ProductManager {
 
@@ -19,62 +22,98 @@ class ProductManager {
     }
 
 
-    readFile () {
-        const content = fs.readFileSync(this.path, 'utf-8')
-        const parseContent = JSON.parse(content)
+    // readFile () {
+    //     const content = fs.readFileSync(this.path, 'utf-8')
+    //     const parseContent = JSON.parse(content)
 
-        return parseContent
+    //     return parseContent
+    // }
+
+   async readFile ()   { 
+        
+
+        try{
+            // const content  = await productsModel.find().lean()
+            // console.log(content);
+            return await productsModel.find().lean()
+        }
+        catch(err){console.log("no se pueden obtener los productos del servidor");}
+       
+
     }
 
     
 
-    addProducts() {
+//   async  addProducts(title, description, price,thumbnail, code, stock, status ) {
 
+//        let products = await productsModel.find()
+
+
+//         // let product = ({
+//         //     title: this.title,
+//         //     description: this.description,
+//         //     price: this.price,
+//         //     thumbnail: this.thumbnail,
+//         //     code: this.code,
+//         //     stock: this.stock,
+//         //     // id: ProductManager.id
+
+
+//         // })
+
+//         const verifyCode = products.find(element => element.code === product.code)
+
+//         if (verifyCode) {
+//             console.log("ERR that code is in use")
+//         }
+
+
+//         else {
+//         //     products.push(product)
+//         //    await  products.save()
+
+//             // ProductManager.id++
+//           await   productsModel.create({
+//                 title: this.title,
+//                 description: this.description,
+//                 price: this.price,
+//                 thumbnail: this.thumbnail,
+//                 code: this.code,
+//                 stock: this.stock,
+//             })
+            
+
+//             console.log('agregado')
+//         }
+//         // if (!product.title || !product.description || !product.price ||
+
+//         //     !product.thumbnail || !product.code || !product.stock) {
+
+//         //     throw new Error("All fields are required");
+
+//         // }
+//     }
+
+
+//     addToData(params) {
+//         fs.writeFileSync(this.path, JSON.stringify(params))
+//     }
+
+    async getProducts() {
+        // console.log(this.readFile())
+        // return this.readFile()
+        try{
+            // const content  = await productsModel.find().lean()
+            // console.log(content);
+            let products = await productsModel.find().lean()
+            
+            return products
+           
+        }
+        catch(err){console.log("no se pueden obtener los productos del servidor");}
        
 
-
-        let product = ({
-            title: this.title,
-            description: this.description,
-            price: this.price,
-            thumbnail: this.thumbnail,
-            code: this.code,
-            stock: this.stock,
-            id: ProductManager.id
-
-
-        })
-
-        const verifyCode = products.find(element => element.code === product.code)
-
-        if (verifyCode) {
-            console.log("ERR")
-        }
-
-
-        else {
-            products.push(product)
-            ProductManager.id++
-
-            // console.log(products)
-        }
-        // if (!product.title || !product.description || !product.price ||
-
-        //     !product.thumbnail || !product.code || !product.stock) {
-
-        //     throw new Error("All fields are required");
-
-        // }
-    }
-
-
-    addToData(params) {
-        fs.writeFileSync(this.path, JSON.stringify(params))
-    }
-
-    getProducts() {
-        // console.log(this.readFile())
-        return this.readFile()
+    
     }
 
     getProductsById(id) {

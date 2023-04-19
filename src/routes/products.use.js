@@ -1,10 +1,11 @@
 import { Router } from 'express'
 import { productsModel } from '../models/products.model.js'
+import ProductManager from '../../ProductManager.js'
 // import fs from 'fs'
 const router = Router()
 
 
-
+const class1 = new ProductManager
 // const readFile = ()  =>{
 //     const content = fs.readFileSync('data.json', 'utf-8')
 //     const parseContent = JSON.parse(content)
@@ -29,9 +30,11 @@ router.get("/", async  (req, res)=>{
     // else return res.json(productsMongoDB)
     
         try {
-            let  productsMongoDB =  await productsModel.find()
+            let  productsMongoDB =  await class1.getProducts()
         
         res.send (productsMongoDB)
+
+        
         
         }
         catch(error) {
@@ -66,35 +69,26 @@ router.post('/', async (request, response) => {
     // let product = request.body;
     // product.id = products.length;
     // if (!product.title || !product.description || !product.price ||
-
-    //     !product.thumbnail || !product.code || !product.stock || !product.status || products.find((obj) => obj.title === product.title))  {
-        
-        
+    //     !product.thumbnail || !product.code || !product.stock || !product.status || products.find((obj) => obj.title === product.title))  {    
     //     response.status(400).send({ status: "Error", message: "Producto no valido. Falta completar campos para una carga correcta o es un producto con titulo  repetido" });
     // } else {
     //     products.push(product);
-    //     addToData()
-    
-       
-       
+    //     addToData()  
     //     response.send({ status: "Success", message: `Producto agregado con exito, con ID: ${product.id}` });
-    // }
+   // }
+
+
 try {
     let {title, description, price,thumbnail, code, stock, status     }= request.body;
-
     let product = await productsModel.create({title, description, price,thumbnail, code, stock, status })
+    response.status(200).send('producto agregado' + product)
+} 
 
-    response.status(200).send(product)
 
-    
-
-} catch (error) {
+catch (error) {
     console.log('error al crear pruducto'+ error);
 
 }
-
-
-
 });
 
 
@@ -105,11 +99,6 @@ router.put("/:pid", async  (req,res)=>{
     // const idProduct =  parseInt(req.params.pid)
     // const productUpdate = req.body
     // const updDate = products.map((product) => product.id === idProduct ?{...product, ...productUpdate} : product)
-
-
-   
-    
-   
     // fs.writeFileSync('data.json', JSON.stringify(updDate, null))
 
     // res.send({message: " product update"}) 
@@ -119,7 +108,7 @@ router.put("/:pid", async  (req,res)=>{
         const productUpdate = req.body
 
         let product = await productsModel.updateOne({_id:req.params.pid}, productUpdate)
-        res.status(202).send(product)
+        res.status(202).send(product + 'producto actualizado')
 
 
 

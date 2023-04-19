@@ -4,10 +4,10 @@ const socket = io();
 
 
 
-socket.on("products", data =>{
+socket.on("products",  data =>{
     console.log(data);
     
-data.forEach((producto) => {
+  data.forEach((producto) => {
     const div = document.createElement('div')
 
     div.innerHTML = `

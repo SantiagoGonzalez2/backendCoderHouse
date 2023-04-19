@@ -95,7 +95,8 @@ router.post("/:cid/product/:pid", async (req, res) => {
   };
   cart.products.push(productsToAgree);
 
-  cart.save();
+ 
+   await  cart.save();
 
   console.log(" el producto fue agregado con exito");
 
