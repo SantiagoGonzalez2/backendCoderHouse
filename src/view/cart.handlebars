@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Carrito de compras</title>
+</head>
+
+<body>
+	<h1>Carrito de compras</h1>
+	{{#if cart.products.length}}
+		<table style="border-collapse: collapse; width: 100%;">
+			<thead style="border-bottom: 2px solid black;">
+				<tr>
+					<th style="text-align: left; padding: 8px;">Marca</th>
+					<th style="text-align: left; padding: 8px;">Modelo</th>
+					<th style="text-align: left; padding: 8px;">Codigo</th>
+					<th style="text-align: left; padding: 8px;">Precio: uS</th>
+                    <th style="text-align: left; padding: 8px;">Stock</th>
+                    <th style="text-align: left; padding: 8px;">Cantidad seleccionada</th>
+                    
+				</tr>
+			</thead>
+			<tbody>
+				{{#each cart.products}}
+					<tr style="border-bottom: 1px solid black;">
+						<td style="text-align: left; padding: 8px;">{{this.product.title}}</td>
+                        <td style="text-align: left; padding: 8px;">{{this.product.description}}</td>
+                        <td style="text-align: left; padding: 8px;">{{this.product.code}}</td>
+						<td style="text-align: left; padding: 8px;">{{this.product.price}}</td>
+                        <td style="text-align: left; padding: 8px;">{{this.product.stock}}</td>
+						<td style="text-align: left; padding: 8px;">{{this.quantity}}</td>
+						
+					</tr>
+				{{/each}}
+			</tbody>
+			<tfoot>
+			
+			</tfoot>
+		</table>
+	{{else}}
+		<p>No hay productos en el carrito</p>
+	{{/if}}
+</body>
+
+</html>
+

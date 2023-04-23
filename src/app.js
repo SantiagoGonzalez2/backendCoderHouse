@@ -9,7 +9,7 @@ import {Server} from 'socket.io';
 import productManager from '../ProductManager.js'
 import productList from './routes/productView.use.js'
 import mongoose from 'mongoose';
-import { productsModel } from './models/products.model.js';
+import { createRequire } from 'module';
 
 const class1 = new productManager()
 
@@ -46,8 +46,23 @@ app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 
 
+const require = createRequire(import.meta.url);
 
-// vistas
+// handdlebars
+// const hbs = handlebars.create({
+//     extname: '.handlebars',
+//     defaultLayout: 'main',
+//     layoutsDir: __dirname + '/view/layouts/',
+//     partialsDir: __dirname + '/view/partials/',
+//     allowProtoPropertiesByDefault: true,
+//     runtimeOptions: {
+//         allowProtoPropertiesByDefault: true
+//       }
+//   });
+//   app.engine('handlebars', hbs.engine);
+//   app.set('view engine', 'handlebars');
+//   app.set('views', __dirname + '/view');
+  
 app.engine('handlebars', handlebars.engine());
 app.set('views', __dirname + "/view");
 app.set('view engine', 'handlebars');
@@ -76,13 +91,12 @@ app.use ("/views", productList)
 socketServer.on('connection', socket=>{
     console.log('Nuevo cliente conectado!')
 
-socket.on('data', data =>{
+socket.on('data',  data =>{
     
-    let products = class1.getProducts()
-    data.id = products.length;
-    products.push(data)
-    class1.addToData(products)
-    console.log(products)
+   
+    
+    class1.addToData(data)
+   
 })
 
 
@@ -105,41 +119,16 @@ socket.on("IDdelete", data=>{
     
 })
 
-socket.emit("products", async ()=>{  
-    
-    try {
-    
-    let  productsMongoDB = await productsModel.find().lean()
-    console.log(productsMongoDB);
-    return productsMongoDB
+const sendProducts = async()=>{
+    let productsMongoDB = await class1.getProducts()
+    socket.emit('products', productsMongoDB)
+
 }
+sendProducts()
 
-    catch(err) {
-        console.log("error al cargar la vista de productos " + err);
-    }
+})
+
+  
     
-})
-})
-   
-
-
-// conexion con mongodb
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

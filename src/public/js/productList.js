@@ -1,32 +1,35 @@
 const socket = io();
 
 
-
-
-
-socket.on("products",  data =>{
-    console.log(data);
+// socket.on("products",  data =>{
     
-  data.forEach((producto) => {
-    const div = document.createElement('div')
+ 
 
-    div.innerHTML = `
+  
+  
+//   data.forEach((producto) => {
+//     const div = document.createElement('div')
+
+//     div.innerHTML = `
     
     
    
-      <p>TITULO: ${producto.title}<br>$${producto.price}
-      DESCRIPCION: ${producto.description}<br>CODE: ${producto.code}<br>STOCK: ${producto.stock} <br> ID : ${producto.id}</p>
+//       <p>TITULO: ${producto.title}<br>$${producto.price}
+//       DESCRIPCION: ${producto.description}<br>CODE: ${producto.code}<br>STOCK: ${producto.stock} <br> ID : ${producto.id}</p>
       
-    </div> 
+//     </div> 
    
-  </div> 
+//   </div> 
   
       
-    `
-    contenedor.appendChild(div)})
-})
+//     `
+//     contenedor.appendChild(div)})
 
 
+    
+    
+ 
+// })
 
 
 

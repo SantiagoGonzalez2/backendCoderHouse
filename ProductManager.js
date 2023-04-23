@@ -95,9 +95,14 @@ class ProductManager {
 //     }
 
 
-//     addToData(params) {
-//         fs.writeFileSync(this.path, JSON.stringify(params))
-//     }
+  async  addToData(params) {
+       try {
+        productsModel.create(params)
+        console.log('Producto agregado');
+       }catch (error){
+        console.log('error al crear nuevo producto');
+       }
+    }
 
     async getProducts() {
         // console.log(this.readFile())
@@ -115,6 +120,8 @@ class ProductManager {
 
     
     }
+
+   
 
     getProductsById(id) {
 
