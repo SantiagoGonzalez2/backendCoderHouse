@@ -1,45 +1,36 @@
 import { Router } from "express";
-import { productsModel } from "../models/products.model.js";
 import ProductManager from "../../ProductManager.js";
-// import fs from 'fs'
+import mongoose from "mongoose";
 const router = Router();
+const productManager = new ProductManager();
 
-const class1 = new ProductManager();
 
+// devolver los productos
 router.get("/", async (req, res) => {
   try {
-
-
     let page = parseInt(req.query.page);
     if (!page) page = 1;
     const { limit } = req.query;
-    let productsMongoDB = await class1.getProducts();
 
     if (limit) {
-      let productlimit = await class1.getProductsLimit(limit);
+      let productlimit = await productManager.getProductsLimit(limit);
       res.send(productlimit);
-    } else return res.send(productsMongoDB);
+    } else {
+      let products = await productManager.getAllProducts();
+      res.send(products);
+    }
   } catch (error) {
-    console.log("no se pudo conectar con MONGODB " + error);
+    console.log("No se pudo conectar con MONGODB " + error);
+    res.status(500).send("No se pudo obtener la lista de productos");
   }
 });
 
-// router.get("/:pid", async  (req,res)=>{
-
-//     const idProduct =  req.params.pid
-//     if (!products.find((obj) => obj.id === parseInt(idProduct))) res.status(400).send({ status: "Error", message: "ID invalido" });
-//     const product =   products.find(obj => obj.id === parseInt(idProduct))
-
-//     if (product) return res.status(200).json(product)
-//     else return res.status(404).json({message: "product dont exist"})
-
-// })
-
-router.post("/",  (request, response) => {
-  
+//enviar productos
+router.post("/", async (request, response) => {
+  try {
     let { title, description, price, thumbnail, code, stock, status } =
       request.body;
-     class1.addToData({
+    let product = await productManager.addProduct({
       title,
       description,
       price,
@@ -48,47 +39,36 @@ router.post("/",  (request, response) => {
       stock,
       status,
     });
-    response.status(200).send("producto agregado" );
-  
-});
-
-router.put("/:pid", async (req, res) => {
-  // const idProduct =  parseInt(req.params.pid)
-  // const productUpdate = req.body
-  // const updDate = products.map((product) => product.id === idProduct ?{...product, ...productUpdate} : product)
-  // fs.writeFileSync('data.json', JSON.stringify(updDate, null))
-
-  // res.send({message: " product update"})
-
-  try {
-    const productUpdate = req.body;
-
-    let product = await productsModel.updateOne(
-      { _id: req.params.pid },
-      productUpdate
-    );
-    res.status(202).send(product + "producto actualizado");
+    response.status(200).send(product);
   } catch (error) {
-    console.log("no se pudo actualizar el producto" + error);
+    console.log("No se pudo agregar el producto " + error);
+    response.status(500).send("No se pudo agregar el producto");
   }
 });
 
-router.delete("/:pid", async (request, response) => {
-  // let pid = request.params.pid
-  // const userPosition = products.filter((product) => product.id !== parseInt(pid))
-
-  // fs.writeFileSync('data.json', JSON.stringify(userPosition, null))
-
-  // return response.send({ status: "Success", message: "Producto eliminado" });
-
+// actualizar productos
+router.put("/:pid", async (req, res) => {
   try {
-    let ProductDelete = await productsModel.deleteOne({
-      _id: request.params.pid,
-    });
+    const productUpdate = req.body;
+    const pid = req.params.pid;
+    const objectId = new mongoose.Types.ObjectId(pid);
 
-    response.status(200).send("borrado con exito");
+    let product = await productManager.updateProduct(objectId, productUpdate);
+    res.status(202).send(product);
   } catch (error) {
-    console.log("error al borrar" + error);
+    console.log("No se pudo actualizar el producto" + error);
+    res.status(500).send("No se pudo actualizar el producto");
+  }
+});
+
+///borrar productos
+router.delete("/:pid", async (request, response) => {
+  try {
+    let product = await productManager.deleteProduct(request.params.pid);
+    response.status(200).send("Producto eliminado con éxito");
+  } catch (error) {
+    console.log("Error al eliminar el producto: " + error);
+    response.status(500).send("Error al eliminar el producto");
   }
 });
 

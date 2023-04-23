@@ -9,7 +9,7 @@ import {Server} from 'socket.io';
 import productManager from '../ProductManager.js'
 import productList from './routes/productView.use.js'
 import mongoose from 'mongoose';
-import { createRequire } from 'module';
+
 
 const class1 = new productManager()
 
@@ -46,22 +46,7 @@ app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 
 
-const require = createRequire(import.meta.url);
-
-// handdlebars
-// const hbs = handlebars.create({
-//     extname: '.handlebars',
-//     defaultLayout: 'main',
-//     layoutsDir: __dirname + '/view/layouts/',
-//     partialsDir: __dirname + '/view/partials/',
-//     allowProtoPropertiesByDefault: true,
-//     runtimeOptions: {
-//         allowProtoPropertiesByDefault: true
-//       }
-//   });
-//   app.engine('handlebars', hbs.engine);
-//   app.set('view engine', 'handlebars');
-//   app.set('views', __dirname + '/view');
+//handlebars
   
 app.engine('handlebars', handlebars.engine());
 app.set('views', __dirname + "/view");

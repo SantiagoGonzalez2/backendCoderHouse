@@ -20,6 +20,5 @@ const cartSchema = new mongoose.Schema({
   ],
 });
 
-    const cartsModel = mongoose.model(cartCollection, cartSchema);
+    export  const cartsModel = mongoose.model(cartCollection, cartSchema);
 
-  export default cartsModel;
