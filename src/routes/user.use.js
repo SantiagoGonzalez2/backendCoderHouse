@@ -26,10 +26,14 @@ router.post("/register", passport.authenticate('register'),
         res.send({ status: "success", payload: req.session.user, message: "¡Primer logueo realizado! :)" });
     });
 
-router.get('/logout', (req, res)=>{
-    req.logout();
-  res.redirect('/users/login');
-})
+    router.get('/logout', function(req, res){
+        
+        req.session.destroy();
+        res.redirect('/users/login');
+        console.log("sesion destruida");
+      });
+      
+      
 
 
 
