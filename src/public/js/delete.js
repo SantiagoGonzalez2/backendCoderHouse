@@ -9,7 +9,7 @@ function deleted (e){
 e.preventDefault()
 
 let id = document.getElementById("IDdelete").value
-!alert("Producto borrado")
+
 socket.emit("IDdelete", id)
 formDelate.reset()
 }

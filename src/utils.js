@@ -13,11 +13,23 @@ export const createHash = password => bcrypt.hashSync(password, bcrypt.genSaltSy
 
 // validamos la contraseña con la que esta en la DB como hash
 export const isValidPassword = (user, password )=>{
-    console.log(`Datos a validar: user-password: ${user.password}, password: ${password}`);
+    
     return bcrypt.compareSync(password, user.password)
 }
 
 
+//corroborar si es admin
+
+export const isAdmin = (req, res, next) => {
+    const user = req.session.user;
+    if (user && user.role === 'admin') {
+      next();
+      console.log("usuario en modo administrador");
+    } else {
+      res.status(401).send('Unauthorized');
+    }
+  }
+  
 
 
 

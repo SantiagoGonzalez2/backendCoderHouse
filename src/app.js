@@ -15,6 +15,7 @@ import initializePassport from './config/passport.config.js';
 import MongoStore from 'connect-mongo';
 import usersViewRouter from './routes/userView.use.js'
 import session from 'express-session';
+import { ObjectId } from 'mongoose';
 
 
 const class1 = new productManager()
@@ -113,32 +114,21 @@ socket.on('data',  data =>{
     
    
     
-    class1.addToData(data)
+    class1.addProduct(data)
    
 })
 
 
 socket.on("IDdelete", data=>{
-
     
-    class1.deleteProduct(parseInt(data))
+    class1.deleteProduct(data)
+   
 
-    console.log(" Producto borrado reysss ");
-
-
-
-
-
-        
-
-    
-
-
-    
 })
 
+
 const sendProducts = async()=>{
-    let productsMongoDB = await class1.getProducts()
+    let productsMongoDB = await class1.getAllProducts()
     socket.emit('products', productsMongoDB)
 
 }

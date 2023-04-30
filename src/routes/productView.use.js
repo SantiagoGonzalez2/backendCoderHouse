@@ -23,9 +23,7 @@ router.get('/products', async (req,res) =>{
           query.title = { $regex: searchQuery, $options: 'i' }; 
         }
 
-        let user = req.session.user.name 
-
-        console.log(user + "llego");
+       
 
 
     

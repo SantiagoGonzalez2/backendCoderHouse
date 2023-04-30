@@ -1,5 +1,6 @@
 
 import { productsModel } from './src/models/products.model.js'
+import { ObjectId } from 'mongoose';
 
 
 
@@ -49,7 +50,8 @@ class ProductManager {
   
     async deleteProduct(id) {
       try {
-        let product = await productsModel.deleteOne({ _id: id });
+        let idD = new ObjectId(id)
+        let product = await productsModel.deleteOne({ _id: idD });
         console.log("El producto se eliminó correctamente.");
         return product;
       } catch (error) {

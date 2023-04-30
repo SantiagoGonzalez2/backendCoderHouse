@@ -3,8 +3,7 @@ const form = document.getElementById('loginForm');
 form.addEventListener('submit',e=>{
     e.preventDefault();
     const data = new FormData(form);
-    console.log(data)
-    const obj = {};
+      const obj = {};
     data.forEach((value,key)=>obj[key]=value);
     fetch('/api/sessions/login',{
         method:'POST',
@@ -14,7 +13,6 @@ form.addEventListener('submit',e=>{
         }
     }).then(result=>{
         if(result.status===200){
-            console.log(obj)
             window.location.replace('/views/products');
         }else if(result.status ===401){
             alert("Login invalido!!")
