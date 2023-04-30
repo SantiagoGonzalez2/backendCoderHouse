@@ -29,7 +29,9 @@ router.get('/products', async (req,res) =>{
         productsMongoDB.prevLink = productsMongoDB.hasPrevPage?`http://localhost:8080/views/products?page=${productsMongoDB.prevPage}`:'';
         productsMongoDB.nextLink = productsMongoDB.hasNextPage?`http://localhost:8080/views/products?page=${productsMongoDB.nextPage}`:'';
         productsMongoDB.isValid= !(page<=0||page>productsMongoDB.totalPages)
-        res.render('productsList',productsMongoDB)
+        res.render('productsList',{ ...productsMongoDB,
+        user: req.session.user,
+        isValid: true})
     
     
       } catch (error) {

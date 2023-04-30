@@ -2,6 +2,10 @@
 {{#if isValid}}
 <div>
    {{#each docs}}
+
+   <h1>Bienvenido {{user.first_name}}</h1>
+
+
    <div>
       <p>PRODUCTO: {{this.title}} &nbsp; <br> MODELO:{{this.description}} <br> PRECIO: U$ {{this.price}} <br> STOCK : {{
          this.stock}}</p>
