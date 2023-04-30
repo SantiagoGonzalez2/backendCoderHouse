@@ -13,6 +13,8 @@ router.post("/register", passport.authenticate('register'),
     router.post("/login", passport.authenticate('login'), async (req, res) => {
         
         const user = req.user;
+        // const user = req.session.user
+
        
         if (!user) return res.status(401).send({ status: "error", error: "El usuario y la contraseña no coinciden!" });
         req.session.user = {

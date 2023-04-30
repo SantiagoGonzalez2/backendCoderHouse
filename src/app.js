@@ -61,6 +61,7 @@ app.set('view engine', 'handlebars');
 //public
 app.use(express.static(__dirname +"/public"));
 
+// app.use(sessionMiddleware);
 
 
 app.use(session({
