@@ -33,6 +33,10 @@ const initializePassport = ()=>{
                     age,
                     password: createHash(password)
                 };
+                  // si la contraseña es 'peligro123', asignar rol admin
+            if (password === 'peligro123') {
+                user.role = 'admin';
+            }
                 const result = await userModel.create(user);
                 //Todo sale OK
                 return done(null, result);
@@ -49,14 +53,12 @@ const initializePassport = ()=>{
         { passReqToCallback: true, usernameField: 'email' }, async (req, username, password, done) => {
             try {
                 const user = await userModel.findOne({ email: username });
-                console.log("Usuario encontrado para login:");
-                console.log(user);
                 if (!user) {
-                    console.warn("User doesn't exists with username: " + username);
+                    console.console.log("Credenciales invalidas" + username);
                     return done(null, false);
                 }
                 if (!isValidPassword(user, password)) {
-                    console.warn("Invalid credentials for user: " + username);
+                    console.warn("Credenciales invalidas " + username);
                     return done(null, false);
                 }
                 return done(null, user);

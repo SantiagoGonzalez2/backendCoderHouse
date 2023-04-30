@@ -10,6 +10,7 @@ router.post("/register", passport.authenticate('register'),
     });
 
 
+
     router.post("/login", passport.authenticate('login'), async (req, res) => {
         
         const user = req.user;
@@ -20,7 +21,8 @@ router.post("/register", passport.authenticate('register'),
         req.session.user = {
             name: `${user.first_name} ${user.last_name}`,
             email: user.email,
-            age: user.age
+            age: user.age,
+            role: user.role
         }
         res.send({ status: "success", payload: req.session.user, message: "¡Primer logueo realizado! :)" });
     });

@@ -49,15 +49,18 @@ class ProductManager {
     }
   
     async deleteProduct(id) {
-      try {
-        let idD = new ObjectId(id)
-        let product = await productsModel.deleteOne({ _id: idD });
+     
+       
+    try {
+    await  productsModel.deleteOne({ _id: id })
         console.log("El producto se eliminó correctamente.");
-        return product;
-      } catch (error) {
+        
+    }
+    catch {
         console.log("No se pudo eliminar el producto " + error);
         throw error;
-      }
+    };
+
     }
   }
   export default ProductManager

@@ -122,6 +122,8 @@ socket.on('data',  data =>{
 socket.on("IDdelete", data=>{
     
     class1.deleteProduct(data)
+
+    socket.emit("borrado",data)
    
 
 })

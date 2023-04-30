@@ -1,9 +1,10 @@
 import { Router } from 'express'
+import { isAdmin } from '../utils.js'
 
 const router = Router()
 
 
-router.get('/cargaproducto', (req,res) =>{
+router.get('/cargaproducto',isAdmin, (req,res) =>{
     res.render('index',{})
 })
 
