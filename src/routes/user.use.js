@@ -10,8 +10,7 @@ router.post("/register", passport.authenticate('register'),
     });
 
 
-
-    router.post("/login", passport.authenticate('login'), async (req, res) => {
+ router.post("/login", passport.authenticate('login'), async (req, res) => {
         
         const user = req.user;
         // const user = req.session.user
@@ -27,7 +26,10 @@ router.post("/register", passport.authenticate('register'),
         res.send({ status: "success", payload: req.session.user, message: "¡Primer logueo realizado! :)" });
     });
 
-
+router.get('/logout', (req, res)=>{
+    req.logout();
+  res.redirect('/users/login');
+})
 
 
 
