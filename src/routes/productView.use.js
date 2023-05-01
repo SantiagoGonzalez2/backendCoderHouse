@@ -1,11 +1,12 @@
 import { Router } from 'express'
 import { productsModel } from '../models/products.model.js';
+import { isAuthenticated } from '../utils.js';
 
 
 const router = Router()
 
 
-router.get('/products', async (req,res) =>{
+router.get('/products', isAuthenticated, async (req,res) =>{
    
     try {
         let page = parseInt(req.query.page);
