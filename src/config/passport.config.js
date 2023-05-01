@@ -1,8 +1,8 @@
 import passport from "passport";
 import passportLocal from 'passport-local'
-
 import { createHash, isValidPassword } from '../utils.js';
 import { userModel } from "../models/user.model.js";
+import { cartsModel } from "../models/cart.model.js";
 
 
 
@@ -37,6 +37,15 @@ const initializePassport = ()=>{
             if (password === 'peligro123') {
                 user.role = 'admin';
             }
+            //////probado cart por user
+            const newCart = new cartsModel();
+            await newCart.save();
+            user.cart = newCart._id;
+           
+
+
+
+            /////////
                 const result = await userModel.create(user);
                 //Todo sale OK
                 return done(null, result);

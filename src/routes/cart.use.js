@@ -2,7 +2,7 @@ import { Router } from "express";
 const router = Router();
 import CartManager from "../CartManager.js";
 const cartManager = new CartManager();
-import { isAuthenticated } from "../utils.js" 
+
 
 // Crear un nuevo carrito
 router.post("/", async (req, res) => {
@@ -20,9 +20,15 @@ router.post("/:cid/product/:pid", async (req, res) => {
   const pidProduct = req.params.pid;
 
   try {
-    const cart = await cartManager.addProductToCart(cidCart, pidProduct);
+    // const cart = await cartManager.addProductToCart(cidCart, pidProduct);
+    // console.log("El producto fue agregado con éxito");
+  
+    const user = req.session.user;
+    const cart = await cartManager.addProductToCart(user.cart, pidProduct);
     console.log("El producto fue agregado con éxito");
-    res.status(200).send(cart);
+    
+    res.setHeader('Location', `/api/cart/${cidCart}`);
+    res.status(302).end();
   } catch (err) {
     console.log("No se pudo agregar el producto al carrito: " + err);
     res.status(500).send({ message: "Ocurrió un error al agregar el producto al carrito" });
