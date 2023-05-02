@@ -25,56 +25,65 @@ class CartManager {
     }
   }
 
-//   async addProductToCart(cid, pid) {
-//     try {
-//       const cart = await cartsModel.findOne({ _id: cid }, "products");
-//       const productM = await productsModel.find({ _id: pid });
-
-//       const idAgree = productM.find((x) => x._id);
-
-//       let productsToAgree = {
-//         product: idAgree._id,
-//         quantity: 1,
-//       };
-//       cart.products.push(productsToAgree);
-
-//       await cart.save();
-
-//       console.log("el producto fue agregado con exito");
-//       return cart;
-//     } catch (err) {
-//       console.log("no se agrego el producto al carrito" + err);
-//     }
-//   }
-async  addProductToCart(cid, pid) {
+  async addProductToCart(cid, pid) {
     try {
-      const cart = await cartsModel.findOne({ _id: cid }, "products");
-      const product = await productsModel.findById(pid);
-  
-      // Verificar si el producto ya está en el carrito
-      const existingProduct = cart.products.find((p) => p.product.equals(product._id));
-      if (existingProduct) {
-        // Si el producto ya está en el carrito, aumentar la cantidad en 1
-        existingProduct.quantity += 1;
-      } else {
-        // Si el producto no está en el carrito, agregarlo con cantidad 1
-        cart.products.push({ product: product._id, quantity: 1 });
-      }
-  
-      // Restar 1 al stock del producto
-      product.stock -= 1;
-      await product.save();
-  
-      // Guardar los cambios en el carrito
+       
+      const cart = await cartsModel.find({ _id: cid },'products');
+      const productM = await productsModel.find({ _id: pid });
+
+      const idAgree = productM.find((x) => x._id);
+
+      let productsToAgree = {
+        product: idAgree._id,
+        quantity: 1,
+      };
+      cart.push(productsToAgree)
+      console.log(cart);
+
       await cart.save();
-  
-      console.log("El producto fue agregado con éxito");
+
+      console.log("el producto fue agregado con exito");
       return cart;
     } catch (err) {
-      console.log("No se pudo agregar el producto al carrito: " + err);
-      throw new Error("Ocurrió un error al agregar el producto al carrito");
+      console.log("no se agrego el producto al carrito" + err);
     }
-  }
+}
+
+
+
+
+
+//   }
+// async  addProductToCart(cid, pid) {
+//     try {
+//       const cart = await cartsModel.findOne({ _id: cid }, "products");
+//       const product = await productsModel.findById(pid);
+  
+//       Verificar si el producto ya está en el carrito
+//       const existingProduct = cart.findOne((p) => p.product.equals(product._id));
+//       if (existingProduct) {
+//         Si el producto ya está en el carrito, aumentar la cantidad en 1
+//         existingProduct.quantity += 1;
+//       } else {
+//         Si el producto no está en el carrito, agregarlo con cantidad 1
+//         cart.products.push({ product: product._id, quantity: 1 });
+        
+//       }
+  
+//       // Restar 1 al stock del producto
+//       product.stock -= 1;
+//       await product.save();
+  
+//       // Guardar los cambios en el carrito
+//       await cart.save();
+  
+//       console.log("El producto fue agregado con éxito");
+//       return cart;
+//     } catch (err) {
+//       console.log("No se pudo agregar el producto al carrito: " + err);
+//       throw new Error("Ocurrió un error al agregar el producto al carrito");
+//     }
+//   }
   
 
   async removeProductFromCart(cid, pid) {

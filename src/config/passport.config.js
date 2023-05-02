@@ -31,7 +31,9 @@ const initializePassport = ()=>{
                     last_name,
                     email,
                     age,
-                    password: createHash(password)
+                    password: createHash(password),
+                    
+                    
                 };
                   // si la contraseña es 'peligro123', asignar rol admin
             if (password === 'peligro123') {
@@ -91,8 +93,35 @@ const initializePassport = ()=>{
             console.error("Error deserializando el usuario: " + error);
         }
     });
+    // passport.deserializeUser(async (id, done) => {
+    //     try {
+    //       const userI = await userModel.findById(id);
+    //       const cart =  user.cart ;
+          
+          
+    //       if (!userI) {
+    //         return done(null, false);
+    //       }
+    //       console.log(userI._id);
+    //       const user = {
+    //         _id: userI._id,
+    //         name: userI.name,
+    //         email: userI.email,
+    //         cart: cart._id // agregamos el id del carrito a la sesión del usuario
+    //       };
+          
+    //       return done(null, user);
+    //     } catch (err) {
+    //       return done(err);
+    //     }
+    //   });
+
+
+
+
 }
 
+  
 
 export default initializePassport;
 
