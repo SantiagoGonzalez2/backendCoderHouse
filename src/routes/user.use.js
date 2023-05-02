@@ -2,14 +2,14 @@ import { Router } from 'express';
 import passport from 'passport';
 
 const router = Router();
-
+//registro
 router.post("/register", passport.authenticate('register'),
     async (req, res) => {
         console.log("Registrando nuevo usuario.");
         res.status(201).send({ status: "success", message: "Usuario creado con extito." });
     });
 
-
+//ingreso
  router.post("/login", passport.authenticate('login'), async (req, res) => {
         
         const user = req.user;
@@ -21,11 +21,14 @@ router.post("/register", passport.authenticate('register'),
             name: `${user.first_name} ${user.last_name}`,
             email: user.email,
             age: user.age,
-            role: user.role
+            role: user.role,
+            cart: user.cart
         }
         res.send({ status: "success", payload: req.session.user, message: "¡Primer logueo realizado! :)" });
     });
 
+
+//destroy
     router.get('/logout', function(req, res){
         
         req.session.destroy();
@@ -34,9 +37,6 @@ router.post("/register", passport.authenticate('register'),
       });
       
       
-
-
-
 
 
 

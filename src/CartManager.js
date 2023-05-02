@@ -1,10 +1,5 @@
 import {cartsModel} from './models/cart.model.js';
-
 import {productsModel} from './models/products.model.js';
-
-
-
-
 import { Types } from 'mongoose';
 
 const { ObjectId } = Types;
@@ -25,65 +20,38 @@ class CartManager {
     }
   }
 
-  async addProductToCart(cid, pid) {
+
+async addProductToCart(cid, pid) {
     try {
+      const cart = await cartsModel.findOne({ _id: cid });
+      const product = await productsModel.findOne({ _id: pid });
+  
+      if (!product) {
+        throw new Error("Producto no encontrado");
+      }
+  
+      const existingProduct = cart.products.find((p) => p.product.equals(pid));
+  
+      if (existingProduct) {
+        existingProduct.quantity++;
+      } else {
+        cart.products.push({
+          product: product._id,
+          quantity: 1,
+        });
        
-      const cart = await cartsModel.find({ _id: cid },'products');
-      const productM = await productsModel.find({ _id: pid });
-
-      const idAgree = productM.find((x) => x._id);
-
-      let productsToAgree = {
-        product: idAgree._id,
-        quantity: 1,
-      };
-      cart.push(productsToAgree)
-      console.log(cart);
-
+      }
+      product.stock -= 1;
+      await product.save();
+  
       await cart.save();
-
-      console.log("el producto fue agregado con exito");
+      console.log("El producto fue agregado con éxito");
       return cart;
     } catch (err) {
-      console.log("no se agrego el producto al carrito" + err);
+      console.log("No se pudo agregar el producto al carrito: " + err);
+      throw err;
     }
-}
-
-
-
-
-
-//   }
-// async  addProductToCart(cid, pid) {
-//     try {
-//       const cart = await cartsModel.findOne({ _id: cid }, "products");
-//       const product = await productsModel.findById(pid);
-  
-//       Verificar si el producto ya está en el carrito
-//       const existingProduct = cart.findOne((p) => p.product.equals(product._id));
-//       if (existingProduct) {
-//         Si el producto ya está en el carrito, aumentar la cantidad en 1
-//         existingProduct.quantity += 1;
-//       } else {
-//         Si el producto no está en el carrito, agregarlo con cantidad 1
-//         cart.products.push({ product: product._id, quantity: 1 });
-        
-//       }
-  
-//       // Restar 1 al stock del producto
-//       product.stock -= 1;
-//       await product.save();
-  
-//       // Guardar los cambios en el carrito
-//       await cart.save();
-  
-//       console.log("El producto fue agregado con éxito");
-//       return cart;
-//     } catch (err) {
-//       console.log("No se pudo agregar el producto al carrito: " + err);
-//       throw new Error("Ocurrió un error al agregar el producto al carrito");
-//     }
-//   }
+  }
   
 
   async removeProductFromCart(cid, pid) {

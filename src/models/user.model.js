@@ -30,10 +30,10 @@ const userSchema = new mongoose.Schema({
   },
   role: { type: String, enum: ['user', 'admin'], default: 'user' },
   //////////////////// probado cart x user/////
-  // cart: {
-  //   type: mongoose.Types.ObjectId,
-  //   ref: cartsModel
-  // }
+  cart: {
+    type: mongoose.Types.ObjectId,
+    ref: cartsModel
+  }
  
 });
 

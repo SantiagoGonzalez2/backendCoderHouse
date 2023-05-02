@@ -19,48 +19,19 @@ router.post("/:cid/product/:pid", async (req, res) => {
   const cidCart = req.params.cid;
   const pidProduct = req.params.pid;
 
+  const userid = req.session.user.cart
+
+  console.log(userid);
+
   try {
-    // const cart = await cartManager.addProductToCart(cidCart, pidProduct);
-    // console.log("El producto fue agregado con éxito");
-  
-    const user = req.session.user;
-    const cart = await cartManager.addProductToCart(user.cart, pidProduct);
-    console.log("El producto fue agregado con éxito");
-    
-    res.setHeader('Location', `/api/cart/${cidCart}`);
+    const cart = await cartManager.addProductToCart(userid, pidProduct);
+    res.setHeader('Location', `/api/cart/${userid}`);
     res.status(302).end();
   } catch (err) {
     console.log("No se pudo agregar el producto al carrito: " + err);
     res.status(500).send({ message: "Ocurrió un error al agregar el producto al carrito" });
   }
 });
-// router.post("/product/:pid", async (req, res) => {
-//   const pidProduct = req.params.pid;
-  
-//   try {
-//     const user = req.session.user;
-    
-//     if (!user) {
-//       throw new Error("No se pudo obtener el usuario de la sesión");
-//     }
-//     const cartId = user.cart
-//     console.log(cartId + 'ESTE GENERA');
-    
-//     const cart = await cartManager.addProductToCart(cartId, pidProduct);
-//     console.log("El producto fue agregado con éxito");
-// console.log(cart);
-//     res.setHeader('Location', `/api/cart/${user.cart}`);
-//     res.status(302).end();
-//   } catch (err) {
-//     console.log("No se pudo agregar el producto al carrito: " + err);
-//     res.status(500).send({ message: "Ocurrió un error al agregar el producto al carrito" });
-//   }
-// });
-
-
-
-
-
 
 // Eliminar un producto del carrito
 router.delete("/:cid/products/:pid", async (req, res) => {
