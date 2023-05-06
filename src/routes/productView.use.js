@@ -6,7 +6,7 @@ import { isAuthenticated } from '../utils.js';
 const router = Router()
 
 
-router.get('/products',  async (req,res) =>{
+router.get('/products', isAuthenticated, async (req,res) =>{
    
     try {
         let page = parseInt(req.query.page);
@@ -36,7 +36,7 @@ router.get('/products',  async (req,res) =>{
       
         res.render('productsList', 
          {...productsMongoDB,
-          user : req.user}
+          user : req.session.user}
           
           
         );
