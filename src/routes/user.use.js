@@ -9,24 +9,37 @@ router.post("/register", passport.authenticate('register'),
         res.status(201).send({ status: "success", message: "Usuario creado con extito." });
     });
 
-//ingreso
- router.post("/login", passport.authenticate('login'), async (req, res) => {
+// //ingreso
+//  router.post("/login", passport.authenticate('login'), async (req, res) => {
         
-        const user = req.user;
-        // const user = req.session.user
+//         const user = req.user;
+//         // const user = req.session.user
 
        
-        if (!user) return res.status(401).send({ status: "error", error: "El usuario y la contraseña no coinciden!" });
-        req.session.user = {
-            name: `${user.first_name} ${user.last_name}`,
-            email: user.email,
-            age: user.age,
-            role: user.role,
-            cart: user.cart
-        }
-        res.send({ status: "success", payload: req.session.user, message: "¡Primer logueo realizado! :)" });
-    });
+//         if (!user) return res.status(401).send({ status: "error", error: "El usuario y la contraseña no coinciden!" });
+//         req.session.user = {
+//             name: `${user.first_name} ${user.last_name}`,
+//             email: user.email,
+//             age: user.age,
+//             role: user.role,
+//             cart: user.cart
+//         }
+//         res.send({ status: "success", payload: req.session.user, message: "¡Primer logueo realizado! :)" });
+//     });
 
+// router.get("/:userId", authToken,
+// async (req, res) =>{
+//     const userId = req.params.userId;
+//     try {
+//         const user = await userModel.findById(userId);
+//         if (!user) {
+//             res.status(202).json({message: "User not found with ID: " + userId});
+//         }
+//         res.json(user);
+//     } catch (error) {
+//         console.error("Error consultando el usuario con ID: " + userId);
+//     }
+// });
 
 //destroy
     router.get('/logout', function(req, res){

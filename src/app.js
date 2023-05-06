@@ -14,7 +14,9 @@ import passport from 'passport';
 import initializePassport from './config/passport.config.js';
 import MongoStore from 'connect-mongo';
 import usersViewRouter from './routes/userView.use.js'
-import session from 'express-session';
+// import session from 'express-session';
+import cookieParser from 'cookie-parser';
+import jwtRouter from './routes/jwt.router.js'
 
 
 
@@ -63,22 +65,22 @@ app.set('view engine', 'handlebars');
 app.use(express.static(__dirname +"/public"));
 
 // app.use(sessionMiddleware);
+app.use(cookieParser('CoderS3cr3tC0d3'))
 
-
-app.use(session({
-    //ttl: Time to live in seconds,
-    //retries: Reintentos para que el servidor lea el archivo del storage.
-    //path: Ruta a donde se buscará el archivo del session store.
-    // store: new fileStore({path:"./sessions", ttl:40, retries: 0}),
-    store:MongoStore.create({
-        mongoUrl:DB,
-        mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
-        ttl: 600
-    }),
-    secret:"CoderS3cret",
-    resave: false,
-    saveUninitialized: true
-}))
+// app.use(session({
+//     //ttl: Time to live in seconds,
+//     //retries: Reintentos para que el servidor lea el archivo del storage.
+//     //path: Ruta a donde se buscará el archivo del session store.
+//     // store: new fileStore({path:"./sessions", ttl:40, retries: 0}),
+//     store:MongoStore.create({
+//         mongoUrl:DB,
+//         mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
+//         ttl: 600
+//     }),
+//     secret:"CoderS3cret",
+//     resave: false,
+//     saveUninitialized: true
+// }))
 
 
 //Middlewares Passport
@@ -103,6 +105,8 @@ app.use ("/views", productList)
 app.use("/api/sessions/", userRouters)
 
 app.use('/users',usersViewRouter);
+
+app.use("/api/jwt", jwtRouter);
 
 
 //apreton de manos 
