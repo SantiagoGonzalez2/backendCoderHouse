@@ -15,6 +15,7 @@ import initializePassport from './config/passport.config.js';
 import MongoStore from 'connect-mongo';
 import usersViewRouter from './routes/userView.use.js'
 import session from 'express-session';
+import cookieParser from 'cookie-parser';
 
 
 
@@ -48,7 +49,8 @@ const conecctMongoDB = async ()=>{
 conecctMongoDB()
 
 
-
+//// cookies con jwt
+app.use(cookieParser('micookie'))
 
 
 // preparar la configuracion del servidor para recibir archivos json

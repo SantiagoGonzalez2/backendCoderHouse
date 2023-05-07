@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import passport from 'passport';
+import { generateToken } from '../utils.js';
+
 
 const router = Router();
 //registro
@@ -24,6 +26,13 @@ router.post("/register", passport.authenticate('register'),
             role: user.role,
             cart: user.cart
         }
+//probado jwt
+        const token = generateToken(user)
+        res.cookie('jwtCookieToken', token , {
+            maxAge: 60000,
+            // httpOnly: false // expone la cookie
+            httpOnly: true // No expone la cookie
+        })
         res.send({ status: "success", payload: req.session.user, message: "¡Primer logueo realizado! :)" });
     });
 
@@ -36,10 +45,11 @@ router.get("/githubcallback", passport.authenticate('github'), async (req, res) 
     req.session.user= {
         name : `${user.first_name} ${user.last_name}`,
         email: user.email,
-        age: user.age
+        age: user.age,
+        cart: user.cart
     };
-    // req.session.admin = true;
-    res.redirect("/github");
+    
+    res.redirect("/views/products");
 });
 
 //destroy

@@ -9,15 +9,15 @@ const userCollection = 'users'
 const userSchema = new mongoose.Schema({
   first_name: {
     type: String,
-    required: true
+    // required: true
   },
   last_name: {
     type: String,
-    required: true
+    // required: true
   },
   email: {
     type: String,
-    required: true,
+    // required: true,
     unique: true
   },
   age: {
@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
   },
   password:{
     type: String,
-    required : true
+    // required : true
   },
   role: { type: String, enum: ['user', 'admin'], default: 'user' },
   //////////////////// probado cart x user/////
