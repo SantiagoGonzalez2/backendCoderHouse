@@ -3,11 +3,11 @@ import ProductManager from "../../ProductManager.js";
 import mongoose from "mongoose";
 const router = Router();
 const productManager = new ProductManager();
-import { isAuthenticated } from "../utils.js";
+import {  verifyToken } from "../utils.js";
 
 
 // devolver los productos
-router.get("/", isAuthenticated, async (req, res) => {
+router.get("/", verifyToken, async (req, res) => {
   try {
     let page = parseInt(req.query.page);
     if (!page) page = 1;

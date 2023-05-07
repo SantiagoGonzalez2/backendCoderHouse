@@ -19,7 +19,7 @@ router.post("/:cid/product/:pid", async (req, res) => {
   const cidCart = req.params.cid;
   const pidProduct = req.params.pid;
 
-  const userid = req.session.user.cart
+  const userid = req.user.cart
 
   console.log(userid);
 
