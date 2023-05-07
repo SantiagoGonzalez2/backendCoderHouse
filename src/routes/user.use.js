@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import passport from 'passport';
-import { generateToken } from '../utils.js';
+
 
 
 const router = Router();
@@ -15,7 +15,7 @@ router.post("/register", passport.authenticate('register'),
  router.post("/login", passport.authenticate('login'), async (req, res) => {
         
         const user = req.user;
-        // const user = req.session.user
+       
 
        
         if (!user) return res.status(401).send({ status: "error", error: "El usuario y la contraseña no coinciden!" });
@@ -26,13 +26,7 @@ router.post("/register", passport.authenticate('register'),
             role: user.role,
             cart: user.cart
         }
-//probado jwt
-        const token = generateToken(user)
-        res.cookie('jwtCookieToken', token , {
-            maxAge: 60000,
-            // httpOnly: false // expone la cookie
-            httpOnly: true // No expone la cookie
-        })
+
         res.send({ status: "success", payload: req.session.user, message: "¡Primer logueo realizado! :)" });
     });
 

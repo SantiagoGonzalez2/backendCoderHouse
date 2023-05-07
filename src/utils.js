@@ -36,40 +36,6 @@ export const isAuthenticated = (req, res, next) => {
   }
 };
 
-// Manejo de sesiones con JWT ////////////////////////////////
 
-import jwt from "jsonwebtoken";
-
-// generamos una clave para utilizar como referencia al cifrado
-const PRIVATE_KEY = "micookie";
-
-// generar el token
-
-// 1 objeto con usuario 2 clave de cifrado 3 tiempo de vida
-
- export const generateToken = (user) => {
-  const token = jwt.sign({ user }, PRIVATE_KEY, { expiresIn: "2h" });
-  return token;
-};
-
-// autenticacion del token
-
-export const authToken = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-
-  if (!authHeader) {
-    return res.status(401).send({ error: "no hay token " });
-  }
-  const token = authHeader.split("")[1]; //split para retirar palabra que esta adelante del token
-  jwt.verify(token, PRIVATE_KEY, (error, credentials) => {
-    //jwt verifica el token existente
-    if (error) {
-      return res.status(403).send({ error: "no autorizado" });
-    }
-    req.user = credentials.user;
-    console.log(token);
-    next();
-  });
-};
 
 export default __dirname;

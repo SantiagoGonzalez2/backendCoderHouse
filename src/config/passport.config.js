@@ -4,10 +4,6 @@ import { createHash, isValidPassword } from '../utils.js';
 import { userModel } from "../models/user.model.js";
 import { cartsModel } from "../models/cart.model.js";
 import GitHubStrategy from 'passport-github2';
-//probado jwt
-import {  generateToken } from '../utils.js';
-import  jwt  from "jsonwebtoken";
-import jwtstrategy from 'passport-jwt';
 
 
 // Declarar la estrategia 
@@ -59,6 +55,7 @@ const initializePassport = ()=>{
         }
 
     ))
+
     // estrategia github
     passport.use('github', new GitHubStrategy(
         {
@@ -114,57 +111,13 @@ const initializePassport = ()=>{
                     console.warn("Credenciales invalidas " + username);
                     return done(null, false);
                 }
-                //probando jwt
-                const access_token = generateToken(user)
-                console.log(access_token);
-                return done(null, user,access_token);
+                return done(null, user);
             } catch (error) {
                 return done(error);
             }
         })
     );
   
-
-
-
-    /// estrategia con token y cookie
-   
-        const JWTstrategy = jwtstrategy.Strategy
-        const ExtractJWT = jwtstrategy.ExtractJwt
-
-
-      const cookieExtractor = req =>{
-       let token = null
-
-       if(req && req.cookies) {
-        token =req.cookies['micookie']
-       }
-       return token
-
-        }
-
-        passport.use('jwt', new JWTstrategy({
-            jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
-            secretOrKey: 'micookie'
-        },async (jwt_payload, done )=>{
-            try {
-                return done (null, jwt_payload)
-            } catch (err) {
-                console.log('no atuoriz');
-                return done (err)
-                
-            }
-        }
-        ))
-
-
-
-
-
-
-
-
-
 
     //Funciones de Serializacion y Desserializacion
     passport.serializeUser((user, done) => {
