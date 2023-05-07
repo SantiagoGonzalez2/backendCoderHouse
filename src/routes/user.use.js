@@ -19,7 +19,7 @@ router.post(
 );
 
 //ingreso
-router.post( "/login",passport.authenticate("login", { session: "false" }),
+router.post( "/login",passport.authenticate('local', { session: "false" }),
   async (req, res) => {
     const user = req.user;
 
