@@ -1,13 +1,14 @@
 import { Router } from 'express'
 import { productsModel } from '../models/products.model.js';
 import { verifyToken } from '../utils.js';
+import passport from 'passport';
 
 
 
 const router = Router()
 
 
-router.get('/products',  verifyToken, async (req,res) =>{
+router.get('/products', passport.authenticate("jwt", { session: false }), async (req,res) =>{
    
     try {
         let page = parseInt(req.query.page);

@@ -5,9 +5,10 @@ import { userModel } from "../models/user.model.js";
 import { cartsModel } from "../models/cart.model.js";
 import GitHubStrategy from 'passport-github2';
 import jwtStrategy from 'passport-jwt';
+import { secretKey } from "../utils.js";
 
-const JwtStrategy = jwtStrategy.Strategy;
-const ExtractJWT = jwtStrategy.ExtractJwt;
+
+import passportJWT from "passport-jwt";
 
 
 
@@ -64,45 +65,45 @@ const initializePassport = ()=>{
     // ))
 
     // estrategia github
-    passport.use('github', new GitHubStrategy(
-        {
-            clientID: 'Iv1.796045d20c124706', 
-            clientSecret: '815c9dc12ffe18e0a3b14247d68dd6318695ee01',
-            callbackUrl: 'http://localhost:8080/api/sessions/githubcallback'
-        }, 
-        async (accessToken, refreshToken, profile, done) => {
-            console.log("Profile obtenido del usuario: ");
-            console.log(profile);
-            try {
-                const user = await userModel.findOne({email: profile._json.email});
-                console.log("Usuario encontrado para login:");
-                console.log(user);
-                if (!user) {
-                    console.warn("User doesn't exists with username: " + profile._json.email);
-                    const newCart = new cartsModel();
-                    await newCart.save();
-                    let newUser = {
-                        first_name: profile._json.name,
-                        last_name: '',
-                        age: 18,
-                        email: profile._json.email,
-                        password: '',
-                        cart : newCart._id
+    // passport.use('github', new GitHubStrategy(
+    //     {
+    //         clientID: 'Iv1.796045d20c124706', 
+    //         clientSecret: '815c9dc12ffe18e0a3b14247d68dd6318695ee01',
+    //         callbackUrl: 'http://localhost:8080/api/sessions/githubcallback'
+    //     }, 
+    //     async (accessToken, refreshToken, profile, done) => {
+    //         console.log("Profile obtenido del usuario: ");
+    //         console.log(profile);
+    //         try {
+    //             const user = await userModel.findOne({email: profile._json.email});
+    //             console.log("Usuario encontrado para login:");
+    //             console.log(user);
+    //             if (!user) {
+    //                 console.warn("User doesn't exists with username: " + profile._json.email);
+    //                 const newCart = new cartsModel();
+    //                 await newCart.save();
+    //                 let newUser = {
+    //                     first_name: profile._json.name,
+    //                     last_name: '',
+    //                     age: 18,
+    //                     email: profile._json.email,
+    //                     password: '',
+    //                     cart : newCart._id
                         
-                    };
+    //                 };
                 
         
-                    const result = await userModel.create(newUser);
-                    return done(null, result);
-                } else {
-                    //Si entramos por acá significa que el usuario ya existía.
-                    return done(null, user);
-                }
-            } catch (error) {
-                return done(error);
-            }
-        })
-    );
+    //                 const result = await userModel.create(newUser);
+    //                 return done(null, result);
+    //             } else {
+    //                 //Si entramos por acá significa que el usuario ya existía.
+    //                 return done(null, user);
+    //             }
+    //         } catch (error) {
+    //             return done(error);
+    //         }
+    //     })
+    // );
 
 
     // estrategia login
@@ -125,6 +126,83 @@ const initializePassport = ()=>{
     //         }
     //     })
     // );
+
+
+
+    ////// probando estrategia jwt
+ 
+
+    const cookieExtractor = req =>{
+        let token = null;
+        console.log("Entrando a cookie extractor");
+        if(req && req.cookies){ //Validamos que exista el request y las cookies.
+           console.log("Cooikies presentes!");
+           console.log(req.cookies);
+           token = req.cookies['jwt'];
+           console.log("token obtenido desde cookie");
+           console.log(token);
+        }
+        return token;
+    }
+    const JwtStrategy = jwtStrategy.Strategy;
+    const ExtractJWT = jwtStrategy.ExtractJwt;
+    
+  
+        //Estrategia de obtener Token JWT por Cookie:
+        passport.use('jwt', new JwtStrategy(
+            // extraer la  cookie
+            {
+                jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
+                secretOrKey: secretKey
+            },
+            // Ambiente Async
+            async(jwt_payload, done)=>{
+                console.log("Entrando a passport Strategy con JWT.");
+                try {
+                    console.log("JWT obtenido del payload");
+                    console.log(jwt_payload);
+                    return done(null, jwt_payload.user)
+                } catch (error) {
+                    console.error(error);
+                    return done(error);
+                }
+            }
+        ));
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const JWTStrategy = passportJWT.Strategy;
+// const ExtractJWT = passportJWT.ExtractJwt;
+
+// const options = {
+//   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+//   secretOrKey: secretKey,
+// };
+
+// passport.use(
+//   new JWTStrategy(options, async (payload, done) => {
+//     try {
+//       const user = await userModel.findById(payload.id);
+//       if (!user) {
+//         return done(null, false);
+//       }
+//       done(null, user);
+//     } catch (error) {
+//       done(error, false);
+//     }
+//   })
+// );
 
 
 

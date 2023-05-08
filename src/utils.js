@@ -41,7 +41,7 @@ export const isValidPassword = (user, password) => {
 // probando jwt
 
 
-const secretKey = 'micookie';
+export const secretKey = 'micookie';
 // validar si llega un token , "hay usuario logueado"
  export const verifyToken = (req, res, next) => {
   const token = req.cookies.jwt;
