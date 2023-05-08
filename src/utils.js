@@ -61,7 +61,7 @@ const secretKey = 'micookie';
   });
 };
 
-// verificar si tiene role admin 
+
 
 // Middleware para verificar si el usuario es administrador
 export const isAdmin = (req, res, next) => {

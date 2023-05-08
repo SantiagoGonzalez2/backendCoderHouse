@@ -23,6 +23,7 @@ import cookieParser from 'cookie-parser';
 
 
 
+
 const class1 = new productManager()
 
 //express
@@ -66,7 +67,7 @@ app.use(express.static(__dirname +"/public"));
 
 //cookie
 
-app.use(cookieParser())
+app.use(cookieParser('micookie'))
 
 
 // session con express
@@ -86,10 +87,12 @@ app.use(cookieParser())
 // }))
 
 
-//Middlewares Passport
+// Middlewares Passport
 initializePassport();
 app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.session());
+
+  
 
 
 

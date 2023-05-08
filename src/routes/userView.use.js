@@ -15,7 +15,7 @@ router.get('/login', (req, res)=>{
 
 router.get('/', (req, res)=>{
     res.render("productView", {
-        user: req.session.user
+        user: req.user
         
     });
    
