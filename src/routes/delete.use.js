@@ -1,10 +1,11 @@
 import { Router } from 'express'
-import { isAdmin } from '../utils.js'
+import passport from 'passport'
+
 
 const router = Router()
 
 
-router.get('/delete',isAdmin, (req,res) =>{
+router.get('/delete',passport.authenticate('admin-jwt', { session: false }),(req,res) =>{
     res.render('delete',{})
 })
 

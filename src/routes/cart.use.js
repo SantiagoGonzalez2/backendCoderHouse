@@ -2,7 +2,7 @@ import { Router } from "express";
 const router = Router();
 import CartManager from "../CartManager.js";
 const cartManager = new CartManager();
-import { verifyToken } from "../utils.js";
+import passport from "passport";
 
 
 // Crear un nuevo carrito
@@ -16,7 +16,7 @@ router.post("/", async (req, res) => {
 });
 
 // Agregar un producto al carrito
-router.post("/:cid/product/:pid", verifyToken, async (req, res) => {
+router.post("/:cid/product/:pid", passport.authenticate("jwt", { session: false }), async (req, res) => {
   const cidCart = req.params.cid;
   const pidProduct = req.params.pid;
 
@@ -37,7 +37,7 @@ console.log(user);
 });
 
 // Eliminar un producto del carrito
-router.delete("/:cid/products/:pid", verifyToken, async (req, res) => {
+router.delete("/:cid/products/:pid", passport.authenticate("jwt", { session: false }),async (req, res) => {
   const cidCart = req.params.cid;
   const pidProduct = req.params.pid;
 
@@ -52,7 +52,7 @@ router.delete("/:cid/products/:pid", verifyToken, async (req, res) => {
 });
 
 // Vaciar el carrito
-router.delete("/:cid", verifyToken,async (req, res) => {
+router.delete("/:cid", passport.authenticate("jwt", { session: false }),async (req, res) => {
   const cidCart = req.params.cid;
 
   try {
@@ -66,7 +66,7 @@ router.delete("/:cid", verifyToken,async (req, res) => {
 });
 
 // Actualizar la cantidad de un producto en el carrito
-router.put("/:cid/products/:pid",verifyToken, async (req, res) => {
+router.put("/:cid/products/:pid",passport.authenticate("jwt", { session: false }), async (req, res) => {
   const cidCart = req.params.cid;
   const pidProduct = req.params.pid;
   const newQuantity = req.body.quantity;
@@ -82,7 +82,7 @@ router.put("/:cid/products/:pid",verifyToken, async (req, res) => {
 });
 
 // Obtener un carrito por ID
-router.get("/:cid", verifyToken, async (req, res) => {
+router.get("/:cid", passport.authenticate("jwt", { session: false }), async (req, res) => {
   const cidCart = req.params.cid;
 
   try {

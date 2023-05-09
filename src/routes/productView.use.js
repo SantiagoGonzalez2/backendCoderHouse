@@ -1,6 +1,5 @@
 import { Router } from 'express'
 import { productsModel } from '../models/products.model.js';
-import { verifyToken } from '../utils.js';
 import passport from 'passport';
 
 

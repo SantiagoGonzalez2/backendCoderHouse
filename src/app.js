@@ -12,32 +12,22 @@ import mongoose from 'mongoose';
 import userRouters from './routes/user.use.js'
 import passport from 'passport';
 import initializePassport from './config/passport.config.js';
-import MongoStore from 'connect-mongo';
 import usersViewRouter from './routes/userView.use.js'
-import session from 'express-session';
 import cookieParser from 'cookie-parser';
 
-
-
-
-
-
-
-
 const class1 = new productManager()
-
-//express
+// express SERVER //
 const app = express();
 const PORT = 8080
 const httpServer = app.listen(PORT, ()=> {
     console.log(`server run on port ${PORT}`)
 })
 
-//socket
+// socket //
 const socketServer = new Server(httpServer);
 
 
-//mongo
+//  mongo BBDD //
 const DB = 'mongodb+srv://admin:admin@dbcoder.kj70vvc.mongodb.net/MiDBCD'
 const conecctMongoDB = async ()=>{
     try {
@@ -51,52 +41,32 @@ const conecctMongoDB = async ()=>{
 conecctMongoDB()
 
 
-// preparar la configuracion del servidor para recibir archivos json
+// Middleware  para recibir archivos json dentro del server
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 
 
-//handlebars
+// handlebars //
   
 app.engine('handlebars', handlebars.engine());
 app.set('views', __dirname + "/view");
 app.set('view engine', 'handlebars');
 
-//public
+// public //
 app.use(express.static(__dirname +"/public"));
 
-//cookie
+// cookie //
 
 app.use(cookieParser('micookie'))
 
 
-// session con express
-// app.use(session({
-//     //ttl: Time to live in seconds,
-//     //retries: Reintentos para que el servidor lea el archivo del storage.
-//     //path: Ruta a donde se buscará el archivo del session store.
-//     // store: new fileStore({path:"./sessions", ttl:40, retries: 0}),
-//     store:MongoStore.create({
-//         mongoUrl:DB,
-//         mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
-//         ttl: 600
-//     }),
-//     secret:"CoderS3cret",
-//     resave: false,
-//     saveUninitialized: true
-// }))
-
-
-// Middlewares Passport
+// Middlewares Passport //
 initializePassport();
 app.use(passport.initialize());
-// app.use(passport.session());
 
   
 
-
-
-
+//// rutas declaradas ////
 
 app.use("/api/products", productsRouters)
 
@@ -114,38 +84,26 @@ app.use('/users',usersViewRouter);
 
 
 
+// instancia de clase //
 
-//apreton de manos 
+
+//apreton de manos  SOCKET //
 
 socketServer.on('connection', socket=>{
     console.log('Nuevo cliente conectado!')
 
-socket.on('data',  data =>{
-    
-   
-    
+socket.on('data',  data =>{   
     class1.addProduct(data)
-   
 })
-
-
-socket.on("IDdelete", data=>{
-    
+socket.on("IDdelete", data=>{  
     class1.deleteProduct(data)
-
     socket.emit("borrado",data)
-   
-
 })
-
-
 const sendProducts = async()=>{
     let productsMongoDB = await class1.getAllProducts()
     socket.emit('products', productsMongoDB)
-
 }
 sendProducts()
-
 })
 
   

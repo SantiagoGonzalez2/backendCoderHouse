@@ -1,13 +1,14 @@
 import { Router } from "express";
 import ProductManager from "../../ProductManager.js";
 import mongoose from "mongoose";
+
 const router = Router();
 const productManager = new ProductManager();
-import {  verifyToken } from "../utils.js";
+
 
 
 // devolver los productos
-router.get("/", verifyToken, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     let page = parseInt(req.query.page);
     if (!page) page = 1;
