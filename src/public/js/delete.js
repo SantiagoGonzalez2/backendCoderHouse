@@ -1,4 +1,3 @@
-const socket = io();
 
 
 const formDelate = document.getElementById("formDelate")
@@ -6,15 +5,22 @@ const formDelate = document.getElementById("formDelate")
 formDelate = addEventListener("submit", deleted)
 
 function deleted (e){
-e.preventDefault()
+    e.preventDefault()
 
-let id = document.getElementById("IDdelete").value
+    let pid = document.getElementById("IDdelete").value
 
-socket.emit("IDdelete", id)
+    fetch(`/productos/${pid}`,{
+        method:'DELETE',
+        headers:{
+            'Content-Type':'application/json'
+        }
+    }).then(result=>{
+        if(result.status===200){
+            alert(`Producto con ID ${pid} eliminado`);
+        }else if(result.status ===401){
+            alert("No se pudo eliminar el producto")
+        }
+    })
 
-formDelate.reset()
+    formDelate.reset()
 }
-
-socket.on("borrado", data =>{
-    !alert(data + 'producto eliminado')
-})

@@ -14,6 +14,10 @@ import passport from 'passport';
 import initializePassport from './config/passport.config.js';
 import usersViewRouter from './routes/userView.use.js'
 import cookieParser from 'cookie-parser';
+/// probado herencia 
+import ProductosRouter from './routes/custom/products.extend.router.js';
+const productosRouter = new ProductosRouter();
+
 
 const class1 = new productManager()
 // express SERVER //
@@ -22,6 +26,8 @@ const PORT = 8080
 const httpServer = app.listen(PORT, ()=> {
     console.log(`server run on port ${PORT}`)
 })
+
+
 
 // socket //
 const socketServer = new Server(httpServer);
@@ -81,6 +87,20 @@ app.use ("/views", productList)
 app.use("/api/sessions/", userRouters)
 
 app.use('/users',usersViewRouter);
+
+//// probando herencia//////
+
+app.use('/productos', productosRouter.getRouter())
+
+// endpoints erroneos
+app.all('*', (req, res) => {
+    res.status(404).json({ error: 'La ruta solicitada no existe' });
+  });
+
+  
+
+
+  
 
 
 

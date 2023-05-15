@@ -9,7 +9,7 @@ import passportJWT from "passport-jwt";
 
 // Declarar la estrategia
 
-const localStrategy = passportLocal.Strategy;
+// const localStrategy = passportLocal.Strategy;
 
 const initializePassport = () => {
   // // estrategia register
@@ -54,45 +54,45 @@ const initializePassport = () => {
 
   // ))
 
-  // estrategia github
-  // passport.use('github', new GitHubStrategy(
-  //     {
-  //         clientID: 'Iv1.796045d20c124706',
-  //         clientSecret: '815c9dc12ffe18e0a3b14247d68dd6318695ee01',
-  //         callbackUrl: 'http://localhost:8080/api/sessions/githubcallback'
-  //     },
-  //     async (accessToken, refreshToken, profile, done) => {
-  //         console.log("Profile obtenido del usuario: ");
-  //         console.log(profile);
-  //         try {
-  //             const user = await userModel.findOne({email: profile._json.email});
-  //             console.log("Usuario encontrado para login:");
-  //             console.log(user);
-  //             if (!user) {
-  //                 console.warn("User doesn't exists with username: " + profile._json.email);
-  //                 const newCart = new cartsModel();
-  //                 await newCart.save();
-  //                 let newUser = {
-  //                     first_name: profile._json.name,
-  //                     last_name: '',
-  //                     age: 18,
-  //                     email: profile._json.email,
-  //                     password: '',
-  //                     cart : newCart._id
+//   estrategia github
+//   passport.use('github', new GitHubStrategy(
+//       {
+//           clientID: 'Iv1.796045d20c124706',
+//           clientSecret: '815c9dc12ffe18e0a3b14247d68dd6318695ee01',
+//           callbackUrl: 'http://localhost:8080/api/sessions/githubcallback'
+//       },
+//       async (accessToken, refreshToken, profile, done) => {
+//           console.log("Profile obtenido del usuario: ");
+//           console.log(profile);
+//           try {
+//               const user = await userModel.findOne({email: profile._json.email});
+//               console.log("Usuario encontrado para login:");
+//               console.log(user);
+//               if (!user) {
+//                   console.warn("User doesn't exists with username: " + profile._json.email);
+//                   const newCart = new cartsModel();
+//                   await newCart.save();
+//                   let newUser = {
+//                       first_name: profile._json.name,
+//                       last_name: '',
+//                       age: 18,
+//                       email: profile._json.email,
+//                       password: '',
+//                       cart : newCart._id
 
-  //                 };
+//                   };
 
-  //                 const result = await userModel.create(newUser);
-  //                 return done(null, result);
-  //             } else {
-  //                 //Si entramos por acá significa que el usuario ya existía.
-  //                 return done(null, user);
-  //             }
-  //         } catch (error) {
-  //             return done(error);
-  //         }
-  //     })
-  // );
+//                   const result = await userModel.create(newUser);
+//                   return done(null, result);
+//               } else {
+//                   //Si entramos por acá significa que el usuario ya existía.
+//                   return done(null, user);
+//               }
+//           } catch (error) {
+//               return done(error);
+//           }
+//       })
+//   );
 
   // estrategia login
   // passport.use('login', new localStrategy(
@@ -154,6 +154,7 @@ const initializePassport = () => {
         } catch (error) {
           console.error(error);
           return done(error);
+          
         }
       }
     )

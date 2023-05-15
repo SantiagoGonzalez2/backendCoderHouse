@@ -17,11 +17,12 @@ export const isValidPassword = (user, password) => {
 };
 
 
-// probando jwt
+
+
+
+
+
 
 
 export const secretKey = 'micookie';
-
-
-
 export default __dirname;

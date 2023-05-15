@@ -4,10 +4,11 @@ import passport from 'passport';
 
 
 
+
 const router = Router()
 
 
-router.get('/products', passport.authenticate("jwt", { session: false }), async (req,res) =>{
+router.get('/products' , passport.authenticate("jwt", { session: false }), async (req,res) =>{
    
     try {
         let page = parseInt(req.query.page);

@@ -137,6 +137,8 @@ router.get("/logout", function (req, res) {
     res.redirect("/users/login");
     console.log("cookie borrada-- sesion terminada");
   });
+
+  
   
 
 export default router;
