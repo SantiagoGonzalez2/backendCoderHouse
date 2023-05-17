@@ -9,13 +9,17 @@ import mongoose from "mongoose";
 const productManager = new ProductManager()
 
 class ProductosRouter extends CustomRouter {
+  
   constructor() {
     super();
     this.router.get("/",passport.authenticate('jwt', { session: false }), this.getProducts);
     this.router.post("/", passport.authenticate('admin-jwt', { session: false }),this.addProduct);
     this.router.put("/:pid",passport.authenticate('admin-jwt', { session: false }), this.updateProduct);
     this.router.delete("/:pid",passport.authenticate('admin-jwt', { session: false }), this.deleteProduct);
+    this.router.get('/agregar', passport.authenticate('admin-jwt', { session: false }),this.newProduct);
+    this.router.get('/eliminar',passport.authenticate('admin-jwt', { session: false }),this.deleteView)
   }
+  
 
   async getProducts(req, res) {
     try {
@@ -35,6 +39,7 @@ class ProductosRouter extends CustomRouter {
       if (searchQuery) {
         query.title = { $regex: searchQuery, $options: "i" };
       }
+    
 
       let productsMongoDB = await productsModel.paginate(query,{sort: { price : 1 },page,limit:limit,  lean:true})
 
@@ -102,6 +107,16 @@ class ProductosRouter extends CustomRouter {
       console.log("Error al eliminar el producto: " + error);
       res.status(500).send("Error al eliminar el producto");
     }
+  }
+
+  newProduct(req,res) {
+    res.render('index')
+
+  }
+
+  deleteView (req,res) { 
+    res.render('delete')
+
   }
 }
 

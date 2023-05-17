@@ -16,7 +16,11 @@ import usersViewRouter from './routes/userView.use.js'
 import cookieParser from 'cookie-parser';
 /// probado herencia 
 import ProductosRouter from './routes/custom/products.extend.router.js';
+import usuarioRoutes from './routes/custom/users.extend.router.js';
+import CarritoRoutes from './routes/custom/cart.extend.router.js';
 const productosRouter = new ProductosRouter();
+const usuariosRouter = new usuarioRoutes()
+const carritoRouter = new CarritoRoutes()
 
 
 const class1 = new productManager()
@@ -91,6 +95,8 @@ app.use('/users',usersViewRouter);
 //// probando herencia//////
 
 app.use('/productos', productosRouter.getRouter())
+app.use('/usuarios' ,usuariosRouter.getRouter())
+app.use('/carrito', carritoRouter.getRouter())
 
 // endpoints erroneos
 app.all('*', (req, res) => {

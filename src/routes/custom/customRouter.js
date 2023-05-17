@@ -11,31 +11,25 @@ export default class CustomRouter {
     };
     init() { }; //Esta inicialilzacion se usa para las clases heredadas.
 
-    get(path, policies, ...callbacks) {
+    get(path, ...callbacks) {
         console.log("Entrando por GET a custom router con Path: " + path);
-        console.log(policies);
         this.router.get(path,
-            this.generateCustomResponses,
             this.applyCallbacks(callbacks));
     };
 
 
     post(path,  ...callbacks) {
         this.router.post(path,
-            this.generateCustomResponses,
             this.applyCallbacks(callbacks));
     };
 
     put(path, ...callbacks) {
         this.router.put(path,
-            this.generateCustomResponses,
             this.applyCallbacks(callbacks));
     };
 
     delete(path,  ...callbacks) {
         this.router.delete(path,
-
-            this.generateCustomResponses,
             this.applyCallbacks(callbacks));
     };
 
@@ -53,19 +47,6 @@ export default class CustomRouter {
             }
         });
     }
-
-
-    generateCustomResponses = (req, res, next) => {
-        //Custom responses 
-        res.sendSuccess = product => res.status(200).send({ status: "Success", product });
-        res.sendInternalServerError = error => res.status(500).send({ status: "Error", error });
-        res.sendClientError = error => res.status(400).send({ status: "Client Error, Bad request from client.", error });
-        res.sendUnauthorizedError = error => res.status(401).send({ error: "User not authenticated or missing token." });
-        res.sendForbiddenError = error => res.status(403).send({ error: "Token invalid or user with no access, Unauthorized please check your roles!" });
-        next();
-    };
-
-
 
 
 };

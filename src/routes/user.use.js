@@ -1,6 +1,6 @@
 import { Router } from "express";
 import jwt from "jsonwebtoken";
-import { userModel } from "../models/user.model.js";
+import {userModel}  from "../models/user.model.js";
 import { isValidPassword, createHash } from "../utils.js";
 import { cartsModel } from "../models/cart.model.js";
 
@@ -107,7 +107,15 @@ router.post("/login", async (req, res) => {
 });
 
 
-// ingreso con gitHub
+// terminar sesion -destroy cookie
+router.get("/logout", function (req, res) {
+    res.clearCookie('jwt');
+    res.redirect("/users/login");
+    console.log("cookie borrada-- sesion terminada");
+  });
+
+  
+  // ingreso con gitHub
 // router.get(
 //   "/github",
 //   passport.authenticate("github", { scope: ["user:email"] },{ session: "false" }),
@@ -129,16 +137,5 @@ router.post("/login", async (req, res) => {
 //     res.redirect("/views/products");
 //   }
 // );
-
-
-// terminar sesion -destroy cookie
-router.get("/logout", function (req, res) {
-    res.clearCookie('jwt');
-    res.redirect("/users/login");
-    console.log("cookie borrada-- sesion terminada");
-  });
-
-  
-  
 
 export default router;

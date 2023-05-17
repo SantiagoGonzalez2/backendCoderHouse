@@ -5,7 +5,7 @@ form.addEventListener('submit',e=>{
     const data = new FormData(form);
       const obj = {};
     data.forEach((value,key)=>obj[key]=value);
-    fetch('/api/sessions/login',{
+    fetch('/usuarios/login',{
         method:'POST',
         body:JSON.stringify(obj),
         headers:{
@@ -13,7 +13,7 @@ form.addEventListener('submit',e=>{
         }
     }).then(result=>{
         if(result.status===200){
-            window.location.replace('/views/products');
+            window.location.replace('/productos');
         }else if(result.status ===401){
             alert("Login invalido!!")
         }
