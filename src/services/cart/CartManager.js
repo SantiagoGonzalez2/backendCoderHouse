@@ -1,8 +1,10 @@
-import {cartsModel} from './models/cart.model.js';
-import {productsModel} from './models/products.model.js';
+import {cartsModel} from '../../db/models/cart.model.js';
+import ProductManager from '../product/ProductManager.js';
 import { Types } from 'mongoose';
 
 const { ObjectId } = Types;
+
+const Pmanager = new ProductManager()
 
 class CartManager {
   constructor() {}
@@ -24,10 +26,13 @@ class CartManager {
 async addProductToCart(cid, pid) {
     try {
       const cart = await cartsModel.findOne({ _id: cid });
-      const product = await productsModel.findOne({ _id: pid });
+      const product = await Pmanager.getProductById({_id: pid})
   
       if (!product) {
         throw new Error("Producto no encontrado");
+      }
+      if (product.stock < 1) {
+        throw new Error("No hay más stock disponible");
       }
   
       const existingProduct = cart.products.find((p) => p.product.equals(pid));

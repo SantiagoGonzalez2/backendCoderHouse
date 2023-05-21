@@ -1,4 +1,4 @@
-import CartManager from "../../CartManager.js";
+import CartManager from "../../services/cart/CartManager.js";
 import CustomRouter from "./customRouter.js";
 const cartManager = new CartManager();
 import passport from "passport";

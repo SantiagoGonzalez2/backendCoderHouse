@@ -1,6 +1,6 @@
 
-import { productsModel } from './src/models/products.model.js'
-import { ObjectId } from 'mongoose';
+import { productsModel } from '../../db/models/products.model.js'
+
 
 
 
@@ -49,7 +49,6 @@ class ProductManager {
     }
     
     
-  
     async updateProduct(id, productData) {
       try {
         let product = await productsModel.updateOne({ _id: id }, productData);

@@ -1,4 +1,4 @@
-import cartService from "../services/cartService.js";
+import cartService from "../services/cart/cartService.js";
 
 //--controlador--//
 
@@ -24,7 +24,7 @@ const addProductToCart = async (req, res) => {
       res.status(302).end();
     } catch (error) {
       console.log("No se pudo agregar el producto al carrito: " + error);
-      res.status(500).send({ message: "Ocurrió un error al agregar el producto al carrito" });
+      res.status(500).send('consulte stock disponible');
     }
   };
 

@@ -1,6 +1,6 @@
 import CustomRouter from "./customRouter.js";
-import ProductManager from "../../../ProductManager.js";
-import { productsModel } from "../../models/products.model.js";
+import ProductManager from "../../services/product/ProductManager.js";
+import { productsModel } from "../../db/models/products.model.js";
 import passport from "passport";
 import mongoose from "mongoose";
 

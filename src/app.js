@@ -4,7 +4,7 @@ import cartRouters from './routes/cart.use.js'
 import viewRouters from './routes/form.use.js'
 import deleteRouters from './routes/delete.use.js'
 import handlebars from 'express-handlebars'
-import __dirname from './utils.js'
+import __dirname from './utils/utils.js'
 import productList from './routes/productView.use.js'
 import userRouters from './routes/user.use.js'
 import passport from 'passport';
@@ -86,6 +86,7 @@ app.all('*', (req, res) => {
     res.status(404).json({ error: 'La ruta solicitada no existe' });
   });
 
+;
 
 
 // SOCKET //

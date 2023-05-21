@@ -1,9 +1,9 @@
-import { userModel } from "../models/user.model.js";
-import { cartsModel } from "../models/cart.model.js";
-import { isValidPassword, createHash } from "../utils.js";
+import { userModel } from "../../db/models/user.model.js";
+import { cartsModel } from "../../db/models/cart.model.js";
+import { isValidPassword, createHash,secretKey } from "../../utils/utils.js";
 import jwt from "jsonwebtoken";
 
-const secretKey = "micookie";
+
 
 //registro
 const registerUser = async (first_name, last_name, email, password, age) => {

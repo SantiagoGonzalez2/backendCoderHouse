@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
-import { userModel } from "../../models/user.model.js";
-import { isValidPassword, createHash } from "../../utils.js";
-import { cartsModel } from "../../models/cart.model.js";
+import { userModel } from "../../db/models/user.model.js";
+import { isValidPassword, createHash } from "../../utils/utils.js";
+import { cartsModel } from "../../db/models/cart.model.js";
 import CustomRouter from "./customRouter.js";
 
 const secretKey = "micookie";
