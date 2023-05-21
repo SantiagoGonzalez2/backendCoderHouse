@@ -5,16 +5,15 @@ import viewRouters from './routes/form.use.js'
 import deleteRouters from './routes/delete.use.js'
 import handlebars from 'express-handlebars'
 import __dirname from './utils.js'
-import {Server} from 'socket.io';
-import productManager from '../ProductManager.js'
 import productList from './routes/productView.use.js'
-import mongoose from 'mongoose';
 import userRouters from './routes/user.use.js'
 import passport from 'passport';
 import initializePassport from './config/passport.config.js';
 import usersViewRouter from './routes/userView.use.js'
 import cookieParser from 'cookie-parser';
 import config from './config/config.js';
+import { connectToMongoDB } from './db/database.js';
+import { initializeSocket } from './socket/socket.js';
 /// probado herencia 
 import ProductosRouter from './routes/custom/products.extend.router.js';
 import usuarioRoutes from './routes/custom/users.extend.router.js';
@@ -25,7 +24,6 @@ const usuariosRouter = new usuarioRoutes()
 const carritoRouter = new CarritoRoutes()
 
 
-const class1 = new productManager()
 // express SERVER //
 const app = express();
 const PORT = config.port
@@ -33,25 +31,8 @@ const httpServer = app.listen(PORT, ()=> {
     console.log(`server run on port ${PORT}`)
 })
 
-
-
-// socket //
-const socketServer = new Server(httpServer);
-
-
 //  mongo BBDD //
-const DB = config.mongoUrl
-const conecctMongoDB = async ()=>{
-    try {
-        await mongoose.connect(DB)
-        console.log('conectado con exito a mongoDB');
-    }catch(error) {
-        console.error('fallo la connecion a mongoDB' + error);
-        process.exit()
-    }
-}
-conecctMongoDB()
-
+connectToMongoDB();
 
 // Middleware  para recibir archivos json dentro del server
 app.use(express.urlencoded({extended:true}))
@@ -107,24 +88,9 @@ app.all('*', (req, res) => {
 
 
 
-//apreton de manos  SOCKET //
+// SOCKET //
 
-socketServer.on('connection', socket=>{
-    console.log('Nuevo cliente conectado!')
-
-socket.on('data',  data =>{   
-    class1.addProduct(data)
-})
-socket.on("IDdelete", data=>{  
-    class1.deleteProduct(data)
-    socket.emit("borrado",data)
-})
-const sendProducts = async()=>{
-    let productsMongoDB = await class1.getAllProducts()
-    socket.emit('products', productsMongoDB)
-}
-sendProducts()
-})
+initializeSocket(httpServer)
 
   
     
