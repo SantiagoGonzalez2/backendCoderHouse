@@ -9,7 +9,7 @@ function deleted (e){
 
     let pid = document.getElementById("IDdelete").value
 
-    fetch(`/productos/${pid}`,{
+    fetch(`/api/products/${pid}`,{
         method:'DELETE',
         headers:{
             'Content-Type':'application/json'

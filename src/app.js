@@ -14,10 +14,12 @@ import passport from 'passport';
 import initializePassport from './config/passport.config.js';
 import usersViewRouter from './routes/userView.use.js'
 import cookieParser from 'cookie-parser';
+import config from './config/config.js';
 /// probado herencia 
 import ProductosRouter from './routes/custom/products.extend.router.js';
 import usuarioRoutes from './routes/custom/users.extend.router.js';
 import CarritoRoutes from './routes/custom/cart.extend.router.js';
+
 const productosRouter = new ProductosRouter();
 const usuariosRouter = new usuarioRoutes()
 const carritoRouter = new CarritoRoutes()
@@ -26,7 +28,7 @@ const carritoRouter = new CarritoRoutes()
 const class1 = new productManager()
 // express SERVER //
 const app = express();
-const PORT = 8080
+const PORT = config.port
 const httpServer = app.listen(PORT, ()=> {
     console.log(`server run on port ${PORT}`)
 })
@@ -38,7 +40,7 @@ const socketServer = new Server(httpServer);
 
 
 //  mongo BBDD //
-const DB = 'mongodb+srv://admin:admin@dbcoder.kj70vvc.mongodb.net/MiDBCD'
+const DB = config.mongoUrl
 const conecctMongoDB = async ()=>{
     try {
         await mongoose.connect(DB)
@@ -103,14 +105,6 @@ app.all('*', (req, res) => {
     res.status(404).json({ error: 'La ruta solicitada no existe' });
   });
 
-  
-
-
-  
-
-
-
-// instancia de clase //
 
 
 //apreton de manos  SOCKET //
