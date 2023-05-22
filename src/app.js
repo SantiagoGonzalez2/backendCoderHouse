@@ -1,10 +1,8 @@
 import  express  from 'express';
 import productsRouters from './routes/products.use.js'
 import cartRouters from './routes/cart.use.js'
-import viewRouters from './routes/form.use.js'
-import deleteRouters from './routes/delete.use.js'
 import handlebars from 'express-handlebars'
-import __dirname from './utils/utils.js'
+import __dirname from './utils.js'
 import productList from './routes/productView.use.js'
 import userRouters from './routes/user.use.js'
 import passport from 'passport';
@@ -64,10 +62,6 @@ app.use(passport.initialize());
 app.use("/api/products", productsRouters)
 
 app.use("/api/cart", cartRouters)
-
-app.use("/views/", viewRouters)
-
-app.use ("/views", deleteRouters)
 
 app.use ("/views", productList)
 

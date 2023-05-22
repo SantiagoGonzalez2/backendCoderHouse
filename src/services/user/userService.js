@@ -1,6 +1,6 @@
 import { userModel } from "../../db/models/user.model.js";
 import { cartsModel } from "../../db/models/cart.model.js";
-import { isValidPassword, createHash,secretKey } from "../../utils/utils.js";
+import { isValidPassword, createHash,secretKey } from "../../utils.js";
 import jwt from "jsonwebtoken";
 
 

@@ -3,7 +3,7 @@ import passportLocal from "passport-local";
 import { userModel } from "../db/models/user.model.js";
 import GitHubStrategy from "passport-github2";
 import jwtStrategy from "passport-jwt";
-import { secretKey } from "../utils/utils.js";
+import { secretKey } from "../utils.js";
 
 import passportJWT from "passport-jwt";
 

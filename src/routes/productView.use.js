@@ -51,4 +51,11 @@ router.get('/products' , passport.authenticate("jwt", { session: false }), async
     });
 
 
+router.get('/delete',passport.authenticate('jwt', { session: false }),(req,res) =>{
+      res.render('delete',{})
+  })
+
+router.get('/cargaproducto',passport.authenticate('admin-jwt', { session: false }), (req,res) =>{
+    res.render('index',{})
+})
 export default router

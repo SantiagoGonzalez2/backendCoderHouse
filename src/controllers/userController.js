@@ -28,6 +28,7 @@ const loginUser = async (req, res) => {
 
   try {
     const result = await userService.loginUser(email, password);
+    console.log("llega? " + result);
 
     if (result.success) {
       // Enviar el token JWT en una cookie
