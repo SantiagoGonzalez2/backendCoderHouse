@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { productsModel } from '../db/models/products.model.js';
+import { productsModel } from '../../db/models/products.model.js';
 import passport from 'passport';
 
 

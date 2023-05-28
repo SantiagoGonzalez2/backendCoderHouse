@@ -1,25 +1,19 @@
 import  express  from 'express';
-import productsRouters from './routes/products.use.js'
-import cartRouters from './routes/cart.use.js'
+import productsRouters from './routes/product/products.use.js'
+import cartRouters from './routes/cart/cart.use.js'
 import handlebars from 'express-handlebars'
 import __dirname from './utils.js'
-import productList from './routes/productView.use.js'
-import userRouters from './routes/user.use.js'
+import productList from './routes/product/productView.use.js'
+import userRouters from './routes/user/user.use.js'
 import passport from 'passport';
 import initializePassport from './config/passport.config.js';
-import usersViewRouter from './routes/userView.use.js'
+import usersViewRouter from './routes/user/userView.use.js'
 import cookieParser from 'cookie-parser';
 import config from './config/config.js';
 import { connectToMongoDB } from './db/database.js';
 import { initializeSocket } from './socket/socket.js';
-/// probado herencia 
-import ProductosRouter from './routes/custom/products.extend.router.js';
-import usuarioRoutes from './routes/custom/users.extend.router.js';
-import CarritoRoutes from './routes/custom/cart.extend.router.js';
 
-const productosRouter = new ProductosRouter();
-const usuariosRouter = new usuarioRoutes()
-const carritoRouter = new CarritoRoutes()
+
 
 
 // express SERVER //
@@ -69,11 +63,7 @@ app.use("/api/sessions/", userRouters)
 
 app.use('/users',usersViewRouter);
 
-//// probando herencia//////
 
-app.use('/productos', productosRouter.getRouter())
-app.use('/usuarios' ,usuariosRouter.getRouter())
-app.use('/carrito', carritoRouter.getRouter())
 
 // endpoints erroneos
 app.all('*', (req, res) => {
