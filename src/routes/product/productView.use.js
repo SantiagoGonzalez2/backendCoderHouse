@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { productsModel } from '../../db/models/products.model.js';
 import passport from 'passport';
+import UserDTO from '../../services/dto/user.dto.js';
 
 
 
@@ -31,6 +32,8 @@ router.get('/products' , passport.authenticate("jwt", { session: false }), async
 
     
         let productsMongoDB = await productsModel.paginate(query,{sort: { price : 1 },page,limit:limit,  lean:true})
+
+        
     
         productsMongoDB.prevLink = productsMongoDB.hasPrevPage?`http://localhost:8080/views/products?page=${productsMongoDB.prevPage}`:'';
         productsMongoDB.nextLink = productsMongoDB.hasNextPage?`http://localhost:8080/views/products?page=${productsMongoDB.nextPage}`:'';

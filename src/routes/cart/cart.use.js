@@ -17,10 +17,13 @@ router.delete("/:cid/products/:pid", passport.authenticate("jwt", { session: fal
 router.delete("/:cid", passport.authenticate("jwt", { session: false }), cartController.removeAllProductsFromCart);
 
 //Actualizar
-router.put("/:cid/products/:pid",  cartController.updateProductQuantity);
+router.put("/:cid/products/:pid", passport.authenticate("jwt", { session: false }), cartController.updateProductQuantity);
 
 //Leer
-router.get("/:cid", cartController.getCartById);
+router.get("/:cid", passport.authenticate("jwt", { session: false }),cartController.getCartById);
+
+//Generar orden (TICKET)
+router.post("/:cid/pruchase",passport.authenticate("jwt", { session: false }), cartController.generateOrder)
 
 
 

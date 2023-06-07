@@ -93,6 +93,17 @@ const updateProductQuantity = async (req, res) => {
   };
 
 
+// generar orden
+const generateOrder = async (req,res) =>{
+  
+}
+
+
+
+
+
+
+
 export default {
   createCart,
   addProductToCart,
