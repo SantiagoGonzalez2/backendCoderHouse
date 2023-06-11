@@ -4,12 +4,13 @@
 
 export default class UserDTO {
 
-    constructor(name,  lastName,email, role) {
+    constructor(name,email, role) {
 
       
       this.name = name;
-      this.lastName = lastName
       this.email = email;
       this.role = role 
+      
+      
     }
   }

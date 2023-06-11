@@ -15,7 +15,11 @@ const esquemaUnicoRequerido = {
 const productEsquema = new mongoose.Schema({
             title: esquemaUnicoRequerido,
             description: esquemaUnicoRequerido,
-            price: esquemaUnicoRequerido,
+            price: {
+                type : Number,
+                require : true
+
+            },
             thumbnail:esquemaUnicoRequerido,
             code:esquemaUnicoRequerido,
             stock:esquemaUnicoRequerido,

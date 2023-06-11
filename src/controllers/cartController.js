@@ -1,7 +1,13 @@
+import CartManager from "../services/cart/CartManager.js";
+import ProductManager from "../services/product/ProductManager.js";
 import cartService from "../services/cart/cartService.js";
+import TicketService from "../services/cart/ticket/TicketManager.js";
+import { nanoid } from "nanoid";
 
 //--controlador--//
-
+const TicketManager = new TicketService()
+const cartM = new CartManager()
+const productManager = new ProductManager()
 
 //crear carrito
 const createCart = async (req, res) => {
@@ -93,10 +99,52 @@ const updateProductQuantity = async (req, res) => {
   };
 
 
-// generar orden
-const generateOrder = async (req,res) =>{
-  
-}
+// generar compra
+const generateOrder = async (req, res) => {
+  const cid = req.params.cid;
+  const code = nanoid();
+  const purchaser = req.user.email;
+
+  try {
+    const cart = await cartM.getCartById(cid);
+    const ticketProducts = [];
+    const productsNotAdded = []; // Array para almacenar los IDs de los productos no agregados al ticket
+
+    for (const product of cart.products) {
+      const { product: { _id: productId }, quantity } = product;
+
+      const productData = await productManager.getProductById(productId);
+      const stock = productData.stock;
+      
+      if (stock >= quantity) {
+        ticketProducts.push(product);
+        cartM.removeProductFromCart(cid, productId);
+        const newStock = stock - quantity;
+        await productManager.updateProduct(productId, { stock: newStock });
+      } else {
+        productsNotAdded.push(productId);
+      }
+    }
+    if (ticketProducts.length === 0) {
+      // No se agregaron productos al ticket, devolver una respuesta indicando el error
+      return res.status(400).send("No se pudo generar el ticket debido a la falta de stock");
+    }
+
+    const amount = await TicketManager.calculateTotal(ticketProducts);
+    const createdTicket = await TicketManager.createTicket(code, amount, purchaser);
+    console.log('Ticket creado:', createdTicket);
+
+    if (productsNotAdded.length > 0) {
+      console.log('Los siguientes productos no se agregaron a la orden por falta de stock:', productsNotAdded);
+    }
+    
+
+    res.status(200).render('ticket', createdTicket);
+  } catch (error) {
+    console.error('Error al crear el ticket:', error);
+    res.status(500).send("Error al crear el ticket");
+  }
+};
 
 
 
@@ -110,5 +158,6 @@ export default {
   removeProductFromCart,
   removeAllProductsFromCart,
   updateProductQuantity,
-  getCartById
+  getCartById,
+  generateOrder
 };

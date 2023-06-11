@@ -1,5 +1,6 @@
 import { Router } from "express";
 import userController from "../../controllers/userController.js";
+import passport from 'passport';
 const router = Router();
 
 //registro
@@ -11,7 +12,8 @@ router.post("/login", userController.loginUser);
 //destroy
 router.get("/logout", userController.logoutUser);
 
-
+//dto
+router.get("/current",passport.authenticate("jwt", { session: false }),userController.userDto)
 
 
   

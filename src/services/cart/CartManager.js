@@ -31,9 +31,7 @@ async addProductToCart(cid, pid) {
       if (!product) {
         throw new Error("Producto no encontrado");
       }
-      if (product.stock < 1) {
-        throw new Error("No hay más stock disponible");
-      }
+     
   
       const existingProduct = cart.products.find((p) => p.product.equals(pid));
   
@@ -46,7 +44,7 @@ async addProductToCart(cid, pid) {
         });
        
       }
-      product.stock -= 1;
+     
       await product.save();
   
       await cart.save();
@@ -122,6 +120,23 @@ async addProductToCart(cid, pid) {
       }
     } catch (err) {
       console.log("Error al buscar el carrito: " + err);
+    }
+  }
+  async totalA(cid) {
+    try {
+      const cart = await cartsModel.findOne({ _id: cid }).populate('products.product');
+      
+      let totalAmount = 0;
+      for (const product of cart.products) {
+        const price = product.product.price
+        const quantity = product.quantity;
+        totalAmount += price * quantity;
+      }
+      
+      return totalAmount;
+    } catch (error) {
+      console.error('Error al calcular el monto total:', error);
+      throw new Error('Error al calcular el monto total');
     }
   }
 }

@@ -23,7 +23,9 @@ router.put("/:cid/products/:pid", passport.authenticate("jwt", { session: false 
 router.get("/:cid", passport.authenticate("jwt", { session: false }),cartController.getCartById);
 
 //Generar orden (TICKET)
-router.post("/:cid/pruchase",passport.authenticate("jwt", { session: false }), cartController.generateOrder)
+router.get("/:cid/purchase",passport.authenticate("jwt", { session: false }), cartController.generateOrder)
+
+
 
 
 

@@ -1,4 +1,5 @@
 import {Router} from 'express';
+import UserDTO from '../../services/dto/user.dto.js'
 const router = Router();
 
 
@@ -17,7 +18,8 @@ router.get('/', (req, res)=>{
     res.render("productView", {
         user: req.user
         
-    });
-   
+    });    
 })
+
+
 export default router 

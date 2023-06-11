@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Ticket de compra</title>
+</head>
+
+<body>
+	<h1>Ticket de compra</h1>
+	<table style="border-collapse: collapse; width: 100%;">
+		<thead style="border-bottom: 2px solid black;">
+			<tr>
+				<th style="text-align: left; padding: 8px;">Id</th>
+				<th style="text-align: left; padding: 8px;">Código</th>
+				<th style="text-align: left; padding: 8px;">Fecha y Hora de Compra</th>
+				<th style="text-align: left; padding: 8px;">Total</th>
+				<th style="text-align: left; padding: 8px;">Comprador</th>
+			</tr>
+		</thead>
+		<tbody>
+            
+			<tr style="border-bottom: 1px solid black;">
+				<td style="text-align: left; padding: 8px;">{{_id}}</td>
+				<td style="text-align: left; padding: 8px;">{{code}}</td>
+				<td style="text-align: left; padding: 8px;">{{purchase_datetime}}</td>
+				<td style="text-align: left; padding: 8px;">{{amount}}</td>
+				<td style="text-align: left; padding: 8px;">{{purchaser}}</td>
+			</tr>
+            
+		</tbody>
+	</table>
+
+    
+</body>
+
+</html>

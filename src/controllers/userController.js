@@ -1,4 +1,5 @@
 import userService from "../services/user/userService.js";
+import UserDTO from "../services/dto/user.dto.js";
 
 
 //registro
@@ -60,8 +61,18 @@ const logoutUser = (req, res) => {
     console.log("cookie borrada - sesión terminada");
   };
 
+
+
+// dto
+
+const userDto = (req,res) => {
+const user = new UserDTO(req.user.name, req.user.role, req.user.email)
+res.send(user)
+}
+
 export default {
   registerUser,
   loginUser,
-  logoutUser
+  logoutUser,
+  userDto
 };
