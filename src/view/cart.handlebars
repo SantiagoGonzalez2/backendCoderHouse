@@ -38,10 +38,23 @@
 			
 			</tfoot>
 		</table>
+		<button id="finalizarCompraBtn">FINALIZAR COMPRA</button>
 	{{else}}
 		<p>No hay productos en el carrito</p>
 	{{/if}}
 </body>
+
+<script>
+ const finalizarCompraBtn = document.getElementById('finalizarCompraBtn');
+
+  finalizarCompraBtn.addEventListener('click', () => {
+    const cartId = 'tucarrito'; 
+    const url = `http://localhost:8080/api/cart/${cartId}/purchase`;
+
+    
+    window.location.replace(url);
+  });
+</script>
 
 </html>
 

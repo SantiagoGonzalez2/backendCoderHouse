@@ -2,6 +2,8 @@ import CartManager from "../services/cart/CartManager.js";
 import ProductManager from "../services/product/ProductManager.js";
 import cartService from "../services/cart/cartService.js";
 import TicketService from "../services/cart/ticket/TicketManager.js";
+import emailService from '../services/email/emailService.js';
+import config from "../config/config.js";
 import { nanoid } from "nanoid";
 
 //--controlador--//
@@ -101,7 +103,7 @@ const updateProductQuantity = async (req, res) => {
 
 // generar compra
 const generateOrder = async (req, res) => {
-  const cid = req.params.cid;
+  const cid = req.user.cart
   const code = nanoid();
   const purchaser = req.user.email;
 
@@ -129,6 +131,7 @@ const generateOrder = async (req, res) => {
       // No se agregaron productos al ticket, devolver una respuesta indicando el error
       return res.status(400).send("No se pudo generar el ticket debido a la falta de stock");
     }
+   
 
     const amount = await TicketManager.calculateTotal(ticketProducts);
     const createdTicket = await TicketManager.createTicket(code, amount, purchaser);
@@ -136,6 +139,36 @@ const generateOrder = async (req, res) => {
 
     if (productsNotAdded.length > 0) {
       console.log('Los siguientes productos no se agregaron a la orden por falta de stock:', productsNotAdded);
+    }
+    const mailOptions = {
+      from: config.email,
+      to: [config.email, req.user.email],
+      subject: 'Detalles del ticket',
+      html: `
+        <h2>Detalles del ticket:</h2>
+        <p><strong>Código:</strong> ${createdTicket.code}</p>
+        <p><strong>Monto:</strong> ${createdTicket.amount}</p>
+        <p><strong>Comprador:</strong> ${createdTicket.purchaser}</p>
+        <h3>Productos:</h3>
+        <ul>
+          ${ticketProducts.map(product => `
+            <li>
+              <strong>Marca:</strong> ${product.product.title}<br>
+              <strong>Modelo:</strong> ${product.product.description}<br>
+              <strong>Precio por unidad:</strong> ${product.product.price}<br>
+              <strong>Cantidad:</strong> ${product.quantity}
+            </li>
+          `).join('')}
+        </ul>
+      `,
+      attachments: []
+    };
+
+    try {
+      const result = await emailService(mailOptions);
+      console.log('Correo electrónico enviado:', result);
+    } catch (error) {
+      console.error('Error al enviar el correo electrónico:', error);
     }
     
 

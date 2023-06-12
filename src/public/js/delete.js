@@ -1,5 +1,6 @@
 
 
+
 const formDelate = document.getElementById("formDelate")
 
 formDelate = addEventListener("submit", deleted)

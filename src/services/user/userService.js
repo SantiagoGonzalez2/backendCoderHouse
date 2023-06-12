@@ -1,6 +1,7 @@
 import { userModel } from "../../db/models/user.model.js";
 import { cartsModel } from "../../db/models/cart.model.js";
 import { isValidPassword, createHash,secretKey } from "../../utils.js";
+import config from "../../config/config.js";
 import jwt from "jsonwebtoken";
 
 
@@ -26,7 +27,7 @@ const registerUser = async (first_name, last_name, email, password, age) => {
     });
 
     // Si la contraseña es 'peligro123', asignar rol admin
-    if (password === "peligro123") {
+    if (password === config.passAdmin) {
       user.role = "admin";
       await user.save();
     }

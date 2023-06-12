@@ -5,13 +5,14 @@ import handlebars from 'express-handlebars'
 import __dirname from './utils.js'
 import productList from './routes/product/productView.use.js'
 import userRouters from './routes/user/user.use.js'
+import chatRouter from './routes/chat/chat.use.js'
 import passport from 'passport';
 import initializePassport from './config/passport.config.js';
 import usersViewRouter from './routes/user/userView.use.js'
 import cookieParser from 'cookie-parser';
 import config from './config/config.js';
 import { connectToMongoDB } from './db/database.js';
-import { initializeSocket } from './socket/socket.js';
+import initializeSocket from './socket/chat.js'
 
 
 
@@ -63,6 +64,10 @@ app.use("/api/sessions/", userRouters)
 
 app.use('/users',usersViewRouter);
 
+app.use('/msg', chatRouter)
+
+
+
 
 
 // endpoints erroneos
@@ -75,9 +80,6 @@ app.all('*', (req, res) => {
 
 // SOCKET //
 
-initializeSocket(httpServer)
 
-  
-    
-
+initializeSocket(httpServer);
 

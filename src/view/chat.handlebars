@@ -1,0 +1,16 @@
+<div style="background-color: #333; color: #fff; padding: 20px;">
+  <h1 style="color: #fff; font-size: 24px;">Conversación con Atención al Cliente</h1>
+  
+  <div>
+    <p>Escribe un mensaje en nuestro Chat <input id="chatBox" type="text"></p>
+  </div>
+
+  <div>
+    <h3>{{user.name}}</h3>
+    <p id="messageLogs" style="color: #fff;"></p>
+  </div>
+</div>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/chat.js"></script>

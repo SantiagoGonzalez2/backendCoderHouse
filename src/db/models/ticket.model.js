@@ -6,7 +6,8 @@ const ticketSchema = new mongoose.Schema({
   code: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
+    
   },
   purchase_datetime: {
     type: Date,
@@ -22,9 +23,7 @@ const ticketSchema = new mongoose.Schema({
   }
 });
 
-// const Ticket = mongoose.model('Ticket', ticketSchema);
 
-// export default Ticket;
 
 
 export const Ticket = mongoose.model('Ticket', ticketSchema)
