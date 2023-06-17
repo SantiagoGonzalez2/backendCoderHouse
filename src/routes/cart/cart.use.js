@@ -1,7 +1,7 @@
 import { Router } from "express";
 const router = Router();
 import passport from "passport";
-import cartController from "../../controllers/cartController.js";
+import cartController from "../../controllers/cart/cartController.js";
 
 
 // Crear un nuevo carrito

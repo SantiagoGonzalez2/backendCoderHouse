@@ -1,9 +1,9 @@
-import CartManager from "../services/cart/CartManager.js";
-import ProductManager from "../services/product/ProductManager.js";
-import cartService from "../services/cart/cartService.js";
-import TicketService from "../services/cart/ticket/TicketManager.js";
-import emailService from '../services/email/emailService.js';
-import config from "../config/config.js";
+import CartManager from "../../services/cart/CartManager.js";
+import ProductManager from "../../services/product/ProductManager.js";
+import cartService from "../../services/cart/cartService.js";
+import TicketService from "../../services/cart/ticket/TicketManager.js";
+import emailService from '../../services/email/emailService.js';
+import config from "../../config/config.js";
 import { nanoid } from "nanoid";
 
 //--controlador--//

@@ -1,5 +1,6 @@
-import userService from "../services/user/userService.js";
-import UserDTO from "../services/dto/user.dto.js";
+import userService from "../../services/user/userService.js";
+import CustomError from "../../services/error/customError.js";
+import UserDTO from "../../services/dto/user.dto.js";
 
 
 //registro
@@ -16,9 +17,7 @@ const registerUser = async (req, res) => {
     });
   } catch (error) {
     console.error("Error registrando el usuario: ", error);
-    res
-      .status(500)
-      .send({ status: "error", message: "Error registrando el usuario." });
+    throw new CustomError(500, "Error registrando el usuario.");
   }
 };
 
@@ -29,30 +28,35 @@ const loginUser = async (req, res) => {
 
   try {
     const result = await userService.loginUser(email, password);
-    
 
     if (result.success) {
-      // Enviar el token JWT en una cookie
+      
       res.cookie("jwt", result.token, { httpOnly: true });
 
-      // Responder con el usuario autenticado y un mensaje de éxito
+      
       res.send({
         status: "success",
         user: result.user,
         message: "¡Primer logueo realizado! :)",
       });
     } else {
-      res.status(401).send({
-        status: "error",
-        error: "El usuario y la contraseña no coinciden!",
-      });
+      throw new CustomError("El usuario y la contraseña no coinciden.", 401);
     }
   } catch (error) {
-    // Manejar errores
+   
     console.error(error);
-    res.status(500).send({ status: "error", error: "Error interno del servidor" });
+
+    if (error instanceof CustomError) {
+      res.status(error.statusCode).send({
+        status: "error",
+        error: error.message,
+      });
+    } else {
+      res.status(500).send({ status: "error", error: "Error interno del servidor" });
+    }
   }
 };
+
 
 // destroy
 const logoutUser = (req, res) => {

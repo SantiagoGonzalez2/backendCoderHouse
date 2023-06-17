@@ -3,6 +3,7 @@ import { cartsModel } from "../../db/models/cart.model.js";
 import { isValidPassword, createHash,secretKey } from "../../utils.js";
 import config from "../../config/config.js";
 import jwt from "jsonwebtoken";
+import CustomError from "../error/customError.js";
 
 
 
@@ -11,7 +12,12 @@ const registerUser = async (first_name, last_name, email, password, age) => {
   try {
     const exists = await userModel.findOne({ email });
     if (exists) {
-      throw new Error("El usuario ya existe.");
+      throw new CustomError("El usuario ya existe.", 400);
+    }
+
+    // Validar los demás campos, por ejemplo:
+    if (!first_name || !last_name || !email || !password || !age) {
+      throw new CustomError("Todos los campos son obligatorios.", 400);
     }
 
     const newCart = new cartsModel();
@@ -40,12 +46,13 @@ const registerUser = async (first_name, last_name, email, password, age) => {
 };
 
 
+
 //login
 const loginUser = async (email, password) => {
   try {
     const user = await userModel.findOne({ email });
     if (!user || !isValidPassword(user, password)) {
-      return { success: false };
+      throw new CustomError("El usuario y la contraseña no coinciden.", 401);
     }
 
     const token = jwt.sign(
@@ -66,6 +73,7 @@ const loginUser = async (email, password) => {
     throw error;
   }
 };
+
 
 export default {
   registerUser,

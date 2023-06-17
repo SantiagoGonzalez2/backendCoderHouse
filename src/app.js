@@ -6,6 +6,7 @@ import __dirname from './utils.js'
 import productList from './routes/product/productView.use.js'
 import userRouters from './routes/user/user.use.js'
 import chatRouter from './routes/chat/chat.use.js'
+import mockRouter from './routes/mock/mocking.use.js'
 import passport from 'passport';
 import initializePassport from './config/passport.config.js';
 import usersViewRouter from './routes/user/userView.use.js'
@@ -13,6 +14,7 @@ import cookieParser from 'cookie-parser';
 import config from './config/config.js';
 import { connectToMongoDB } from './db/database.js';
 import initializeSocket from './socket/chat.js'
+import compression from 'express-compression';
 
 
 
@@ -50,7 +52,15 @@ app.use(cookieParser('micookie'))
 initializePassport();
 app.use(passport.initialize());
 
-  
+
+//compression 
+
+app.use(compression({
+  brotli:{enabled:true, zlib:{}}
+}))
+
+
+
 
 //// rutas declaradas ////
 
@@ -65,6 +75,10 @@ app.use("/api/sessions/", userRouters)
 app.use('/users',usersViewRouter);
 
 app.use('/msg', chatRouter)
+
+app.use('/api', mockRouter)
+
+
 
 
 
