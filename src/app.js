@@ -14,7 +14,7 @@ import cookieParser from 'cookie-parser';
 import config from './config/config.js';
 import { connectToMongoDB } from './db/database.js';
 import initializeSocket from './socket/chat.js'
-import compression from 'express-compression';
+import { addLogger } from './config/logggers/logger.js';
 
 
 
@@ -53,11 +53,9 @@ initializePassport();
 app.use(passport.initialize());
 
 
-//compression 
+//loggers
 
-app.use(compression({
-  brotli:{enabled:true, zlib:{}}
-}))
+app.use(addLogger)
 
 
 
