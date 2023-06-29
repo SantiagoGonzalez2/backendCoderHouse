@@ -1,0 +1,6 @@
+{"level":"error","message":"No se pudo agregar el producto al carrito: Error: Error intencional para probar el logger","timestamp":"2023-06-29T22:50:30.574Z"}
+{"level":"debug","message":"Este es un mensaje de log de nivel debug","timestamp":"2023-06-29T23:01:58.239Z"}
+{"level":"http","message":"Este es un mensaje de log de nivel http","timestamp":"2023-06-29T23:01:58.242Z"}
+{"level":"info","message":"Este es un mensaje de log de nivel info","timestamp":"2023-06-29T23:01:58.243Z"}
+{"level":"warning","message":"Este es un mensaje de log de nivel warning","timestamp":"2023-06-29T23:01:58.243Z"}
+{"level":"error","message":"Este es un mensaje de log de nivel error","timestamp":"2023-06-29T23:01:58.244Z"}

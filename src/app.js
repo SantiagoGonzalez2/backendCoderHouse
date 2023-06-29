@@ -14,7 +14,7 @@ import cookieParser from 'cookie-parser';
 import config from './config/config.js';
 import { connectToMongoDB } from './db/database.js';
 import initializeSocket from './socket/chat.js'
-import { addLogger } from './config/logggers/logger.js';
+import logger from './routes/loggers/loggers.use.js'
 
 
 
@@ -53,12 +53,6 @@ initializePassport();
 app.use(passport.initialize());
 
 
-//loggers
-
-app.use(addLogger)
-
-
-
 
 //// rutas declaradas ////
 
@@ -75,6 +69,8 @@ app.use('/users',usersViewRouter);
 app.use('/msg', chatRouter)
 
 app.use('/api', mockRouter)
+
+app.use('/api', logger)
 
 
 

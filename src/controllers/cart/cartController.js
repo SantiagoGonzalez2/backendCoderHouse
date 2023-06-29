@@ -6,10 +6,12 @@ import emailService from '../../services/email/emailService.js';
 import config from "../../config/config.js";
 import { nanoid } from "nanoid";
 
+
 //--controlador--//
 const TicketManager = new TicketService()
 const cartM = new CartManager()
 const productManager = new ProductManager()
+
 
 //crear carrito
 const createCart = async (req, res) => {
@@ -17,7 +19,7 @@ const createCart = async (req, res) => {
     const cart = await cartService.createCart();
     res.send(cart);
   } catch (error) {
-    console.log(error);
+    config.logger.error(error)
   }
 };
 // agregar a carrito existente
@@ -31,7 +33,9 @@ const addProductToCart = async (req, res) => {
       res.setHeader('Location', `/api/cart/${userid}`);
       res.status(302).end();
     } catch (error) {
-      console.log("No se pudo agregar el producto al carrito: " + error);
+      
+      config.logger.error("No se pudo agregar el producto al carrito: " + error);
+
       res.status(500).send('consulte stock disponible');
     }
   };
@@ -44,10 +48,10 @@ const removeProductFromCart = async (req, res) => {
   
       await cartService.removeProductFromCart(cidCart, pidProduct);
   
-      console.log("El producto fue eliminado del carrito con éxito");
+      config.logger.info("El producto fue eliminado del carrito con éxito");
       res.status(201).send({ message: "Producto borrado del carrito" });
     } catch (error) {
-      console.log("No se pudo eliminar el producto del carrito: " + error);
+      config.logger.error("No se pudo eliminar el producto del carrito: " + error);
       res.status(500).send({ message: "Ocurrió un error al eliminar el producto del carrito" });
     }
   };
@@ -59,10 +63,10 @@ const removeAllProductsFromCart = async (req, res) => {
   
       await cartService.removeAllProductsFromCart(cidCart);
   
-      console.log("El carrito fue vaciado con éxito");
+      config.logger.info("El carrito fue vaciado con éxito");
       res.status(201).send({ message: "Carrito vaciado" });
     } catch (error) {
-      console.log("Ocurrió un error al vaciar el carrito: " + error);
+      config.logger.error("Ocurrió un error al vaciar el carrito: " + error);
       res.status(500).send({ message: "Ocurrió un error al vaciar el carrito" });
     }
   };
@@ -76,10 +80,10 @@ const updateProductQuantity = async (req, res) => {
   
       await cartService.updateProductQuantity(cidCart, pidProduct, newQuantity);
   
-      console.log("La cantidad del producto fue actualizada con éxito");
+      config.logger.info("La cantidad del producto fue actualizada con éxito");
       res.status(200).send({ message: "Cantidad actualizada correctamente" });
     } catch (error) {
-      console.log("No se pudo actualizar la cantidad del producto: " + error);
+      config.logger.error("No se pudo actualizar la cantidad del producto: " + error);
       res.status(500).send({ message: "Ocurrió un error al actualizar la cantidad del producto" });
     }
   };
@@ -95,7 +99,7 @@ const updateProductQuantity = async (req, res) => {
         res.status(404).send({ message: "No se encontró el carrito" });
       }
     } catch (error) {
-      console.log("Error al buscar el carrito: " + error);
+      config.logger.error("Error al buscar el carrito: " + error);
       res.status(500).send({ message: "Ocurrió un error al buscar el carrito" });
     }
   };
@@ -110,7 +114,7 @@ const generateOrder = async (req, res) => {
   try {
     const cart = await cartM.getCartById(cid);
     const ticketProducts = [];
-    const productsNotAdded = []; // Array para almacenar los IDs de los productos no agregados al ticket
+    const productsNotAdded = []; 
 
     for (const product of cart.products) {
       const { product: { _id: productId }, quantity } = product;
@@ -128,17 +132,17 @@ const generateOrder = async (req, res) => {
       }
     }
     if (ticketProducts.length === 0) {
-      // No se agregaron productos al ticket, devolver una respuesta indicando el error
+      
       return res.status(400).send("No se pudo generar el ticket debido a la falta de stock");
     }
    
 
     const amount = await TicketManager.calculateTotal(ticketProducts);
     const createdTicket = await TicketManager.createTicket(code, amount, purchaser);
-    console.log('Ticket creado:', createdTicket);
+    config.logger.info('Ticket creado:', createdTicket);
 
     if (productsNotAdded.length > 0) {
-      console.log('Los siguientes productos no se agregaron a la orden por falta de stock:', productsNotAdded);
+      config.logger.info('Los siguientes productos no se agregaron a la orden por falta de stock:', productsNotAdded);
     }
     const mailOptions = {
       from: config.email,
@@ -166,15 +170,15 @@ const generateOrder = async (req, res) => {
 
     try {
       const result = await emailService(mailOptions);
-      console.log('Correo electrónico enviado:', result);
+      config.logger.info('Correo electrónico enviado:', result);
     } catch (error) {
-      console.error('Error al enviar el correo electrónico:', error);
+      config.logger.error('Error al enviar el correo electrónico:', error);
     }
     
 
     res.status(200).render('ticket', createdTicket);
   } catch (error) {
-    console.error('Error al crear el ticket:', error);
+    config.logger.error('Error al crear el ticket:', error);
     res.status(500).send("Error al crear el ticket");
   }
 };

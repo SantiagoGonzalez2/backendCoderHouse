@@ -2,18 +2,44 @@ import winston from "winston";
 
 
 
-const logger = winston.createLogger({
-   
+
+// Logger para dev
+export const developmentLogger = winston.createLogger({
+    levels: {
+      debug: 0,
+      http: 1,
+      info: 2,
+      warning: 3,
+      error: 4,
+      fatal: 5
+    },
     transports: [
-        new winston.transports.Console({ level: "http" }),
-        
+      new winston.transports.Console({ level: "fatal" })
     ]
-});
+  });
+
+// Logger para producción
+export const productionLogger = winston.createLogger({
+    levels: {
+      debug: 0,
+      http: 1,
+      info: 2,
+      warning: 3,
+      error: 4,
+      fatal: 5
+    },
+    transports: [
+        new winston.transports.File({
+          level: "error", 
+          filename: "./src/logs/error.log", 
+          format: winston.format.combine(
+            winston.format.timestamp(),
+            winston.format.json()
+          )
+        })
+      ],
+    level: "info" 
+  });
+  
 
 
-export const addLogger = (req, res, next) => {
-    req.logger = logger;
-    
-    req.logger.http(`${req.method} en ${req.url} - at ${new Date().toLocaleDateString()} - ${new Date().toLocaleTimeString()}`);
-    next();
-};

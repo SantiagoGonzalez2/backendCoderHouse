@@ -1,6 +1,8 @@
 import dotenv from 'dotenv'
 import __dirname from '../utils.js'
 import { Command } from 'commander';
+import { developmentLogger, productionLogger } from './logggers/logger.js';
+
 
 
 
@@ -20,10 +22,13 @@ dotenv.config({
 
 console.log(`Trabajando en entorno '${environment}'`);
 
+const logger = environment === "prod" ? productionLogger : developmentLogger;
+
 
 
 
 export default  {
+  logger,
     port: process.env.PORT,
     mongoUrl: process.env.MONGO_URL,
     email: process.env.EMAIL,
