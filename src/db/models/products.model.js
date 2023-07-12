@@ -1,35 +1,65 @@
 import mongoose from "mongoose"
 import mongoosePaginate from 'mongoose-paginate-v2'
+// import { userModel } from "./user.model.js";
+
 
 
 const productCollections = 'productos'
 
 
-const esquemaUnicoRequerido = {
-    type : String,
-    
-    require: true
-}
-
-
 const productEsquema = new mongoose.Schema({
-            title: esquemaUnicoRequerido,
-            description: esquemaUnicoRequerido,
-            price: {
-                type : Number,
-                require : true
-
-            },
-            thumbnail:esquemaUnicoRequerido,
-            code:esquemaUnicoRequerido,
-            stock:esquemaUnicoRequerido,
-            status:esquemaUnicoRequerido,
-           
-})
+    title: {
+      type: String,
+      required: true
+    },
+    description: {
+      type: String,
+      required: true
+    },
+    price: {
+      type: Number,
+      required: true
+    },
+    thumbnail: {
+      type: String,
+      required: true
+    },
+    code: {
+      type: String,
+      required: true
+    },
+    stock: {
+      type: Number,
+      required: true
+    },
+    status: {
+      type: String,
+      required: true
+    },
+    // owner: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: userModel,
+    //     default: "admin",
+    //   },
+     owner: {
+      type: String,
+        default: "admin",
+      },
+  });
 
 productEsquema.plugin(mongoosePaginate);
 
-export const productsModel = mongoose.model( productCollections, productEsquema)
+export  const productsModel = mongoose.model( productCollections, productEsquema)
+
+
+
+
+
+
+
+
+
+
 
 
 

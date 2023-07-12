@@ -5,6 +5,7 @@ import TicketService from "../../services/cart/ticket/TicketManager.js";
 import emailService from '../../services/email/emailService.js';
 import config from "../../config/config.js";
 import { nanoid } from "nanoid";
+import productServices from "../../services/product/productServices.js";
 
 
 //--controlador--//
@@ -25,13 +26,21 @@ const createCart = async (req, res) => {
 // agregar a carrito existente
 const addProductToCart = async (req, res) => {
     try {
-      const cidCart = req.params.cid;
+      
       const pidProduct = req.params.pid;
       const userid = req.user.cart;
-  
+
+      const product = productServices.getProductById(pidProduct)
+
+
+      if ( product.owner !== userid) {
       const cart = await cartService.addProductToCart(userid, pidProduct);
       res.setHeader('Location', `/api/cart/${userid}`);
-      res.status(302).end();
+      res.status(302).end();}
+      else {
+        config.logger.erro('err')
+      }
+
     } catch (error) {
       
       config.logger.error("No se pudo agregar el producto al carrito: " + error);
@@ -39,6 +48,8 @@ const addProductToCart = async (req, res) => {
       res.status(500).send('consulte stock disponible');
     }
   };
+
+
 
 ///eliminar del carrito
 const removeProductFromCart = async (req, res) => {

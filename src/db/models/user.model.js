@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    // required: true,
+   
     unique: true
   },
   age: {
@@ -26,10 +26,14 @@ const userSchema = new mongoose.Schema({
   },
   password:{
     type: String,
-    // required : true
+    
   },
-  role: { type: String, enum: ['user', 'admin'], default: 'user' },
-  //////////////////// probado cart x user/////
+  role: {
+    type: String,
+    enum: ['user', 'admin', 'premium'],
+    default: 'user'
+  },
+ 
   cart: {
     type: mongoose.Types.ObjectId,
     ref: cartsModel

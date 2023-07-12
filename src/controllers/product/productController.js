@@ -1,4 +1,5 @@
 import ProductService from "../../services/product/productServices.js";
+import config from "../../config/config.js";
 
 const productService = ProductService;
 //listar
@@ -49,14 +50,21 @@ const updateProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const productId = req.params.pid;
-    await productService.deleteProduct(productId);
-    console.log("El producto se eliminó correctamente.");
-    res.status(200).send("Producto eliminado con éxito");
+    const userId = req.user._id; 
+    const product = await productService.getProductById(productId);
+    if (req.user.role === "admin" || product.owner === userId) {
+      await productService.deleteProduct(productId);
+      config.logger.info("El producto se eliminó correctamente.");
+      return res.status(200).send("Producto eliminado con éxito");
+    } else {
+      return res.status(403).send("No tienes permiso para eliminar este producto");
+    }
   } catch (error) {
-    console.log("Error al eliminar el producto: " + error);
+    config.logger.error("Error al eliminar el producto: " + error);
     res.status(500).send("Error al eliminar el producto");
   }
 };
+
 
 export default {
   getAllProducts,

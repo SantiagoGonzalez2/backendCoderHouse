@@ -21,5 +21,14 @@ router.get('/', (req, res)=>{
     });    
 })
 
+router.get('/update/:token', (req, res) => {
+    const token = req.params.token;
+    res.render('update', { token });
+  });
+  
+
+router.get('/changepass', (req,res)=>{
+    res.render('changePass')
+})
 
 export default router 

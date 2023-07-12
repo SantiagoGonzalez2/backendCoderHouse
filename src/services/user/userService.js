@@ -75,7 +75,39 @@ const loginUser = async (email, password) => {
 };
 
 
+const updatePassword = async (email, newPassword) => {
+  try {
+    const user = await userModel.findOne({ email: email});
+    if (!user) {
+      throw new CustomError("El usuario no existe.", 404);
+    }
+    if (isValidPassword(user, newPassword)) {
+      throw new CustomError("La nueva contraseña no puede ser igual a la anterior.", 400);
+    }
+    user.password = createHash(newPassword);
+    await user.save();
+    config.logger.info("contraseña actualizada")
+  } catch (error) {
+    config.logger.error(error);
+    throw error;
+  }
+};
+const getUserById = async (userId) => {
+  try {
+    const user = await userModel.findById(userId);
+    return user;
+  } catch (error) {
+    console.error('Error al obtener el usuario por ID:', error);
+    throw error;
+  }
+};
+
+
+
+
 export default {
   registerUser,
   loginUser,
+  updatePassword,
+  getUserById
 };

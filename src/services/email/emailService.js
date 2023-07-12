@@ -22,4 +22,15 @@ const sendEmail = async (mailOptions) => {
   }
 };
 
+ export const sendEmailWithLink = async (email, link) => {
+  const mailOptions = {
+    from: config.email,
+    to: email,
+    subject: 'Restablecer contraseña',
+    text: `¡Hola! Para restablecer tu contraseña, haz clic en el siguiente enlace: ${link}`,
+  };
+
+  await sendEmail(mailOptions);
+};
+
 export default sendEmail;
