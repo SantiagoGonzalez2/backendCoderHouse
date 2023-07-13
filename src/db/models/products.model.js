@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 import mongoosePaginate from 'mongoose-paginate-v2'
-// import { userModel } from "./user.model.js";
+
 
 
 
@@ -36,15 +36,12 @@ const productEsquema = new mongoose.Schema({
       type: String,
       required: true
     },
-    // owner: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: userModel,
-    //     default: "admin",
-    //   },
-     owner: {
-      type: String,
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users',
         default: "admin",
       },
+    
   });
 
 productEsquema.plugin(mongoosePaginate);

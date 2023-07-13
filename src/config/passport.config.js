@@ -120,14 +120,11 @@ const initializePassport = () => {
   // estraer coockie
   const cookieExtractor = (req) => {
     let token = null;
-    console.log("Entrando a cookie extractor");
+    
     if (req && req.cookies) {
-      //Validamos que exista el request y las cookies.
-      console.log("Cooikies presentes!");
-      console.log(req.cookies);
+   
       token = req.cookies["jwt"];
-      console.log("token obtenido desde cookie");
-      console.log(token);
+
     }
     return token;
   };
@@ -175,7 +172,7 @@ const initializePassport = () => {
           if (!user) {
             return done(null, false);
           }
-          if (user.role !== "admin") {
+          if (user.role !== "admin" && user.role !== "premium") {
             return done(null, false);
           }
           return done(null, user);
