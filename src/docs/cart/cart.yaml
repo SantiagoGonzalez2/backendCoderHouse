@@ -1,0 +1,164 @@
+openapi: 3.0.0
+info:
+  title: Cart API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+tags:
+ - name: CART
+paths:
+  /api/cart/:
+    post:
+      summary: Crear un nuevo carrito
+      tags: [CART]
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+
+  /api/cart/{cid}:               
+    get:
+      summary: Obtener carrito por ID
+      tags: [CART]
+      parameters:
+        - in: path
+          name: cid
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+    delete:
+      summary: Vaciar el carrito
+      tags: [CART]
+      parameters:
+        - in: query
+          name: cid
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Carrito vaciado con éxito
+
+  /api/cart/{cid}/product/{pid}:
+    post:
+      summary: Agregar un producto al carrito
+      tags: [CART]
+      parameters:
+        - in: path
+          name: cid
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: pid
+          schema:
+            type: string
+          required: true
+      responses:
+        '201':
+          description: Producto agregado con éxito
+
+
+  /api/cart/{cid}/products/{pid}:
+    put:
+      summary: Actualizar la cantidad de un producto en el carrito
+      tags: [CART]
+      parameters:
+        - in: path
+          name: cid
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: pid
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: number
+              required:
+                - quantity
+      responses:
+        '202':
+          description: Cantidad actualizada con éxito
+    delete:
+      summary: Eliminar un producto del carrito
+      tags: [CART]
+      parameters:
+        - in: path
+          name: cid
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: pid
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Producto eliminado con éxito
+
+  /api/cart/{cid}/purchase:
+    get:
+      summary: Generar orden (TICKET)
+      tags: [CART]
+      parameters:
+        - in: path
+          name: cid
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Orden generada con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  amount:
+                    type: number
+                  purchaser:
+                    type: string
+                  ticketProducts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CartProduct'
+
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                type: string
+                format: uuid
+              quantity:
+                type: number
+      required:
+        - products
+

@@ -15,6 +15,10 @@ import config from './config/config.js';
 import { connectToMongoDB } from './db/database.js';
 import initializeSocket from './socket/chat.js'
 import logger from './routes/loggers/loggers.use.js'
+import { options } from './docs/config/swagger.js';
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+
 
 
 
@@ -71,6 +75,13 @@ app.use('/msg', chatRouter)
 app.use('/api', mockRouter)
 
 app.use('/api', logger)
+
+//swagger
+
+
+const specs = swaggerJsdoc(options);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 
 

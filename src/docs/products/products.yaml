@@ -1,0 +1,87 @@
+openapi: 3.0.0
+info:
+  title: Product API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+tags:
+ - name: PRODUCTS
+paths:
+  /api/products:
+    get:
+      summary: Obtiene una lista de productos
+      tags: [PRODUCTS]
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+    post:
+      summary: Crea un nuevo producto
+      tags: [PRODUCTS]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '201':
+          description: Producto creado con éxito
+
+    put:
+      summary: Actualiza un producto por su ID
+      tags: [PRODUCTS]
+      parameters:
+        - in: path
+          name: pid
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '202':
+          description: Producto actualizado con éxito
+    delete:
+      summary: Elimina un producto por su ID
+      tags: [PRODUCTS]
+      parameters:
+        - in: path
+          name: pid
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Producto eliminado con éxito
+        '403':
+          description: No tienes permiso para eliminar este producto
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        thumbnail:
+          type: string
+        code:
+          type: string
+        stock:
+          type: number
+        status:
+          type: string
+        owner:
+          type: string
+

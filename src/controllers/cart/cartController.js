@@ -28,24 +28,24 @@ const addProductToCart = async (req, res) => {
     try {
       
       const pidProduct = req.params.pid;
-      const userid = req.user.cart;
+    
+      const cartId = req.user.cart
+      
 
       const product = productServices.getProductById(pidProduct)
+    
 
-
-      if ( product.owner !== userid) {
-      const cart = await cartService.addProductToCart(userid, pidProduct);
-      res.setHeader('Location', `/api/cart/${userid}`);
-      res.status(302).end();}
-      else {
-        config.logger.erro('err')
-      }
+     
+      const cart = await cartService.addProductToCart(cartId, pidProduct);
+      res.setHeader('Location', `/api/cart/${cartId}`);
+      res.status(302).end();
+    
 
     } catch (error) {
       
       config.logger.error("No se pudo agregar el producto al carrito: " + error);
 
-      res.status(500).send('consulte stock disponible');
+      res.status(500).send('No se pudo agregar el producto al carrito');
     }
   };
 

@@ -1,6 +1,6 @@
 import ProductService from "../../services/product/productServices.js";
 import config from "../../config/config.js";
-import mongoose from "mongoose";
+
 
 const productService = ProductService;
 //listar
@@ -28,7 +28,7 @@ const getProductById = async (req, res) => {
 const addProduct = async (req, res) => {
   try {
     const productData = req.body;
-    productData.owner = req.user.id;
+    productData.owner = req.user.email;
     const product = await productService.addProduct(productData);
     res.status(200).send(product);
   } catch (error) {
@@ -51,20 +51,21 @@ const updateProduct = async (req, res) => {
 //borrar
 const deleteProduct = async (req, res) => {
   try {
-    const productIdD = req.params.pid;
-    const productId =  new mongoose.Types.ObjectId(productIdD)
-    const userId = req.user._id;
+    const productId = req.params.pid;
+    const userEmail = req.user.email;
     const product = await productService.getProductById(productId);
+    const pemail = product.owner
+    const userR = req.user.role
 
-    // if (req.user.role === "admin" || userId === product.owner ) { este if no funciona. no valida 
+    if ( userR === 'admin'  || userEmail === pemail) {
       await productService.deleteProduct(productId);
       config.logger.info("El producto se eliminó correctamente.");
       return res.status(200).send("Producto eliminado con éxito");
-    // } else {
-    //   return res
-    //     .status(403)
-    //     .send("No tienes permiso para eliminar este producto");
-    // }
+    } else {
+      return res
+        .status(403)
+        .send("No tienes permiso para eliminar este producto");
+    }
   } catch (error) {
     config.logger.error("Error al eliminar el producto: " + error);
     res.status(500).send("Error al eliminar el producto");
