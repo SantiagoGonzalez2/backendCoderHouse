@@ -28,7 +28,7 @@ const getProductById = async (req, res) => {
 const addProduct = async (req, res) => {
   try {
     const productData = req.body;
-    productData.owner = req.user.email;
+    productData.owner = 'prueba'
     const product = await productService.addProduct(productData);
     res.status(200).send(product);
   } catch (error) {

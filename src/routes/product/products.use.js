@@ -6,11 +6,11 @@ const router = Router();
 
 
 //listar
-router.get("/",passport.authenticate('jwt', { session: false }),  productController.getAllProducts);
+router.get("/", passport.authenticate('admin-jwt', { session: false }), productController.getAllProducts);
 //agrgar
-router.post("/",passport.authenticate('admin-jwt', { session: false }), productController.addProduct);
+router.post("/",passport.authenticate('jwt', { session: false }), productController.addProduct);
 //actualizar
-router.put("/:pid",passport.authenticate('admin-jwt', { session: false }), productController.updateProduct);
+router.put("/:pid",passport.authenticate('jwt', { session: false }), productController.updateProduct);
 //borar
 router.delete("/:pid",passport.authenticate('admin-jwt', { session: false }),  productController.deleteProduct);
 

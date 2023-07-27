@@ -13,10 +13,10 @@ router.post("/login", userController.loginUser);
 router.post('/updatepassword/:token', userController.updatePassword);
 
 
-router.post('/mail', userController.sendEmailPass)
+router.post('/mail', passport.authenticate("jwt", { session: false }),userController.sendEmailPass)
 
 //destroy
-router.get("/logout", userController.logoutUser);
+router.get("/logout",passport.authenticate("jwt", { session: false }),userController.logoutUser);
 
 //dto
 router.get("/current",passport.authenticate("jwt", { session: false }),userController.userDto)

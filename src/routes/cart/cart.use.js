@@ -5,7 +5,7 @@ import cartController from "../../controllers/cart/cartController.js";
 
 
 // Crear un nuevo carrito
-router.post("/", passport.authenticate("jwt", { session: false }), cartController.createCart);
+router.post("/",  cartController.createCart);
   
 //Agregar productos
 router.post("/:cid/product/:pid", passport.authenticate("jwt", { session: false }), cartController.addProductToCart);
@@ -20,7 +20,7 @@ router.delete("/:cid", passport.authenticate("jwt", { session: false }), cartCon
 router.put("/:cid/products/:pid", passport.authenticate("jwt", { session: false }), cartController.updateProductQuantity);
 
 //Leer
-router.get("/:cid", passport.authenticate("jwt", { session: false }),cartController.getCartById);
+router.get("/:cid", cartController.getCartById);
 
 //Generar orden (TICKET)
 router.get("/:cid/purchase",passport.authenticate("jwt", { session: false }), cartController.generateOrder)

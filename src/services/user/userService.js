@@ -32,7 +32,7 @@ const registerUser = async (first_name, last_name, email, password, age) => {
       cart: newCart._id,
     });
 
-    // Si la contraseña es 'peligro123', asignar rol admin
+    
     if (password === config.passAdmin) {
       user.role = "admin";
       await user.save();
@@ -40,8 +40,7 @@ const registerUser = async (first_name, last_name, email, password, age) => {
 
     return user;
   } catch (error) {
-    console.log(error);
-    throw error;
+    throw new CustomError("Todos los campos son obligatorios.", 400);
   }
 };
 

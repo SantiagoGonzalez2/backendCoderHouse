@@ -21,8 +21,9 @@ const registerUser = async (req, res) => {
       user,
     });
   } catch (error) {
-    console.error("Error registrando el usuario: ", error);
-    throw new CustomError(500, "Error registrando el usuario.");
+    res.status(400);
+    
+    
   }
 };
 
